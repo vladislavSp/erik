@@ -1,0 +1,44 @@
+html {
+  height: 100%;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+body {
+  height: 100%;
+}
+
+* {
+  outline:none;
+}
+
+input, textarea {
+  border-radius:0;
+}
+
+textarea {
+  resize: none;
+  overflow-wrap: break-word;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow:inset 0 0 0 50px white;
+  -webkit-text-fill-color:black;
+}
+
+.visually-hidden:not(:focus):not(:active),
+input[type="checkbox"].visually-hidden,
+input[type="radio"].visually-hidden {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
