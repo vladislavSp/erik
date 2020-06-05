@@ -1,0 +1,7 @@
+.basket__item:last-child {
+  border-bottom: none;
+}
+
+.basket[data-state="open"] {
+  display: block;
+}
