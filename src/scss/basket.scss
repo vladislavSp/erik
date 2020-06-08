@@ -1,3 +1,7 @@
+.basket__full {
+  overflow-y: scroll;
+}
+
 .basket__item:last-child {
   border-bottom: none;
 }
