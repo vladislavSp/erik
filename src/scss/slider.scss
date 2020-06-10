@@ -1,0 +1,15 @@
+.controls {
+  pointer-events: none;
+}
+
+.contols__btn {
+  pointer-events: all;
+}
+
+.controls__btn--disabled {
+  pointer-events: none;
+
+  & svg path {
+    stroke: #9A9A9A;
+  }
+}

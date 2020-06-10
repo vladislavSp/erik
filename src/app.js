@@ -5,6 +5,7 @@ import './scss/general.scss';
 import './scss/basket.scss';
 import './scss/good.scss';
 import './scss/menu.scss';
+import './scss/slider.scss';
 
 import './scss/adaptive.scss';
 import './scss/black-theme.scss';

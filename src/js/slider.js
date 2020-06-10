@@ -11,6 +11,7 @@ if (collCont) {
     navigation: {
       nextEl: '.contols__btn[data-control-col="right"]',
       prevEl: '.contols__btn[data-control-col="left"]',
+      disabledClass: 'controls__btn--disabled',
     },
   });
 }

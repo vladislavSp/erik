@@ -9,46 +9,107 @@
     & .header__svg path {
       fill: white;
     }
-
-    & .header__item {
-      color: #9A9A9A;
+    @media (min-width: 768px) {
+      & .header__item {
+        color: #9A9A9A;
+      }
     }
-
     & .header__basket {
       color: white;
     }
+    & .header__line {
+      background-color: white;
+    }
   }
+  & .header--menu-open {
+    background-color: white;
 
-  & .main-title, & .catalog, & .desc, & .bio, & .footer {
+    & .header__svg path {
+      fill: black;
+    }
+    & .header__list {
+      background-color: white;
+    }
+    @media (max-width: 767px) {
+      & .header__item {
+        color: black;
+      }
+    }
+    & .header__line {
+      background-color: black;
+    }
+  }
+  & .main-title, & .catalog, & .desc, & .bio, & .footer, & .info {
     border-color: #333333;
   }
-
   & .shop, & .catalog__title, & .catalog__cost, & .collection__prev, & .footer, & .footer__mail, & .footer__link {
     color: #9A9A9A;
   }
-
   & .desc__btn {
     border-color: white;
   }
-
-  & .catalog__item, & .desc__btn {
+  & .catalog__item, & .desc__btn, & .info__mail {
     color: white;
   }
-
   & .bio__link {
     color: #666;
   }
+  & .controls__svg path {
+    stroke: #fff;
+  }
+  & .controls__btn {
+    &--disabled {
+      & svg path {
+        stroke: #666;
+      }
+    }
+  }
 
   // КОРЗИНА
-  & .basket, & .basket__footer {
+  & .basket, & .basket__footer, & .basket--order, & .basket__footer--order {
     color: black;
     background-color: white;
   }
-  & .basket__name, & .basket__title {
+  & .basket__name, & .basket__title, & .basket__name--order {
     color: black;
   }
   & .basket__footer-btn {
     color: white;
     background-color: black;
+  }
+  & .basket__close-btn {
+    color: black;
+  }
+
+
+  // CARD
+  & .card {
+    border-color: #333333;
+  }
+  & .card__btn {
+    background-color: white;
+  }
+
+
+  // ORDER
+  .order__field {
+    color: white;
+    border-color: white;
+
+    &::placeholder {
+      color: #9A9A9A;
+    }
+  }
+  & .order__checkbox {
+    border-color: white;
+  }
+  & .order__cb-group, & .order__link {
+    color: white;
+  }
+  & .basket__delete svg path {
+    stroke: black;
+  }
+  & .basket__cost-group {
+    border: none;
   }
 }
