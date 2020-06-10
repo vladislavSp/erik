@@ -2,7 +2,7 @@
   background-color: black;
   color: white;
 
-// ГЛАВНАЯ + header/footer
+  // ГЛАВНАЯ + header/footer
   & .header {
     background-color: black;
 
@@ -111,5 +111,84 @@
   }
   & .basket__cost-group {
     border: none;
+  }
+  & .footer__eng {
+    color: white;
+  }
+  & .card__link {
+    color: #9A9A9A;
+  }
+  & .card__emb svg path {
+    stroke: #9A9A9A;
+  }
+}
+
+.header--menu-open {
+  & .selector__theme {
+    background-color: white;
+
+    &::after {
+      background-color: black;
+    }
+  }
+
+  & .selector__active {
+    background-color: black;
+
+    &::after {
+      background-color: white;
+    }
+  }
+}
+
+.selector__theme {
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    transform: translateY(-50%);
+    left: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: white;
+  }
+}
+
+.selector__active {
+  background-color: white;
+
+  &::after {
+    background-color: black;
+    transform: translate(40px, -50%);
+  }
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+  .selector__active {
+    &::after {
+      transform: translate(28px, -50%);
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .selector__theme {
+    &::after {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  .selector__active {
+    &::after {
+      transform: translate(20px, -50%);
+    }
   }
 }
