@@ -2,3 +2,13 @@
   margin-bottom: 0;
   margin-right: 0;
 }
+
+.card[data-state="soldout"] {
+  & .card__cost, & .card__btn {
+    display: none;
+  }
+
+  & .card__track, & .card__soldout {
+    display: block;
+  }
+}

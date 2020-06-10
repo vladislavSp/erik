@@ -1,0 +1,54 @@
+.container--black {
+  background-color: black;
+  color: white;
+
+// ГЛАВНАЯ + header/footer
+  & .header {
+    background-color: black;
+
+    & .header__svg path {
+      fill: white;
+    }
+
+    & .header__item {
+      color: #9A9A9A;
+    }
+
+    & .header__basket {
+      color: white;
+    }
+  }
+
+  & .main-title, & .catalog, & .desc, & .bio, & .footer {
+    border-color: #333333;
+  }
+
+  & .shop, & .catalog__title, & .catalog__cost, & .collection__prev, & .footer, & .footer__mail, & .footer__link {
+    color: #9A9A9A;
+  }
+
+  & .desc__btn {
+    border-color: white;
+  }
+
+  & .catalog__item, & .desc__btn {
+    color: white;
+  }
+
+  & .bio__link {
+    color: #666;
+  }
+
+  // КОРЗИНА
+  & .basket, & .basket__footer {
+    color: black;
+    background-color: white;
+  }
+  & .basket__name, & .basket__title {
+    color: black;
+  }
+  & .basket__footer-btn {
+    color: white;
+    background-color: black;
+  }
+}

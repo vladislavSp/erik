@@ -1,6 +1,3 @@
-// .header__wrap {
-//   transition: background-color 0.3s ease;
-// }
 .header__line {
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
@@ -12,9 +9,7 @@
 
 .header--menu-open {
   // Цвет самого хэдера
-  & .header__wrap {
-    background-color: black;
-  }
+  background-color: black;
 
   & .header__list {
     display: flex;

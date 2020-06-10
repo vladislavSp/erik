@@ -1,3 +1,5 @@
+import ScrollControl from './scrollControl.js';
+
 let basketBtns = [...document.querySelectorAll('*[data-basket-btn]')],
     basket = document.querySelector('[data-basket]');
 
@@ -11,4 +13,5 @@ function changeStateBasketHandler(evt) {
 
 function stateBasket(state) {
   basket.setAttribute('data-state', `${state === 'close' ? 'open' : 'close'}`);
+  state === 'close' ? ScrollControl.lock() : ScrollControl.unlock();
 }

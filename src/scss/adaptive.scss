@@ -1,3 +1,7 @@
+.collection__item:last-child {
+  margin-right: 0;
+}
+
 @media (min-width: 992px) {
   .shop__item:first-child {
     margin-right: 16.25rem;
