@@ -121,6 +121,18 @@
   & .card__emb svg path {
     stroke: #9A9A9A;
   }
+  & .header--order {
+    background-color: white;
+    & .header__emb--order {
+      & .header__svg path {
+        fill: black;
+      }
+    }
+
+    & .header__wrap {
+      border-color: #C4C4C4;
+    }
+  }
 }
 
 .header--menu-open {

@@ -24,3 +24,7 @@ if (goodCont && window.matchMedia("(max-width: 991px)").matches) {
     speed: 600,
   });
 }
+
+let controls = document.querySelector('.controls'),
+    textWrap = document.querySelector('.collection__text');
+if (controls && textWrap) controls.style.bottom = `${textWrap.getBoundingClientRect().height}px`;

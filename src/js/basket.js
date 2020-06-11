@@ -1,7 +1,9 @@
 import ScrollControl from './scrollControl.js';
 
 let basketBtns = [...document.querySelectorAll('*[data-basket-btn]')],
-    basket = document.querySelector('[data-basket]');
+    basket = document.querySelector('[data-basket]'),
+    basketViewOrderBtn = document.querySelector('[data-order-basket="btn"]'),
+    basketOrder = document.querySelector('[data-basket="translate"]');
 
 if (basketBtns) basketBtns.forEach(el => el.addEventListener('click', changeStateBasketHandler));
 
@@ -18,7 +20,7 @@ function stateBasket(state) {
 
 
 
-// Переключение черной темы
+// Переключение черной темы - ВРЕМЕННЫЙ КОД!
 let selectorTheme = document.querySelector('.selector__theme');
 let container = document.querySelector('[data-container]');
 
@@ -29,4 +31,12 @@ function stateTheme() {
 
   document.body.classList.toggle('container--black');
   container.classList.toggle('container--black');
+}
+
+if (basketViewOrderBtn) basketViewOrderBtn.addEventListener('click', viewOrderBasket);
+
+function viewOrderBasket(evt) {
+  evt.preventDefault();
+  basketOrder.classList.toggle('basket-translate');
+  this.textContent = basketOrder.classList.contains('basket-translate') ? `Показать корзину` : `Скрыть корзину`;
 }
