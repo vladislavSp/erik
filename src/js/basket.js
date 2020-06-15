@@ -14,7 +14,6 @@ let basketBtns = [...document.querySelectorAll('*[data-basket-btn]')],
     basketContainer = document.querySelector('.basket__list'),
     goodsArray = [];
 
-
 if (!localStorage.goods) localStorage.goods = JSON.stringify([]);
 if (basketBtns) basketBtns.forEach(el => el.addEventListener('click', changeStateBasketHandler));
 if (basketViewOrderBtn) basketViewOrderBtn.addEventListener('click', viewOrderBasket);
@@ -66,9 +65,9 @@ function countGoods() {
 function addGoodHandler(evt) { // обр-к кнопки добавления товара
   evt.preventDefault();
   addToStorage(createObjectForStorage(this));
-  renderGoodsList(localStorage.goods);
-  stateViewBasket();
-  countGoods();
+  // renderGoodsList(localStorage.goods);
+  // stateViewBasket();
+  // countGoods();
 }
 
 // Формирование объекта для Storage и рендер его в корзине
@@ -83,25 +82,27 @@ function createObjectForStorage(btn) {
   return obj;
 }
 
-function addToStorage(obj) {
-  localStorage.setItem(`goods`, JSON.stringify(renderItemsLocalStorage(obj)));
-}
-function renderItemsLocalStorage(obj) {
-  // возвр массива товаров без дубликатов
+function addToStorage(obj) { // obj - ранее сформированный объект
   goodsArray = JSON.parse(localStorage.goods);
-  goodsArray.push(obj);
 
-  return removeDuplicates(goodsArray);
+  if (goodsArray.every(el => el.name !== obj.name)) { // Если есть id в массиве 
+    goodsArray.push(obj); // если добавляется, то происходит и новый рендер
+    localStorage.setItem(`goods`, JSON.stringify(goodsArray));
+    renderGoodsList(localStorage.goods);
+    stateViewBasket();
+    countGoods();
+  }
 }
+
 function renderGoodsList(renderItem) {
-  // рэндер товаров в корзину из LocalStorage
-  let goods = JSON.parse(renderItem);
+  let goods = JSON.parse(renderItem); // рэндер товаров в корзину из LocalStorage
 
   basketContainer.innerHTML = '';
   if (goods) goods.forEach((el, index) => basketContainer.appendChild(renderOneGood(el, index)));
   //createTotalCost(); // подсчёт цены
   //changeQuantityGoods(); // добавление обработчиков кнопок для плюса и минуса
 }
+
 function renderOneGood(element, i) {
   // рендер одного элемента корзины
   let goodTemplate = document.getElementById('goods-template').content;
@@ -120,44 +121,4 @@ function renderOneGood(element, i) {
   // if (element.number) workTemplate.querySelector('[bags="goods_price"]').textContent = element.price * element.number;
 
   return workTemplate;
-}
-
-function removeDuplicates(arr) {
-  const result = [];
-  const duplicatesIndices = [];
-
-  arr.forEach((current, index) => {
-    if (duplicatesIndices.includes(index)) return;
-
-    result.push(current);
-
-    for (let comparisonIndex = index + 1; comparisonIndex < arr.length; comparisonIndex++) {
-
-      const comparison = arr[comparisonIndex];
-      const currentKeys = Object.keys(current);
-      const comparisonKeys = Object.keys(comparison);
-
-      if (currentKeys.length !== comparisonKeys.length) continue;
-
-      const currentKeysString = currentKeys.sort().join("").toLowerCase();
-      const comparisonKeysString = comparisonKeys.sort().join("").toLowerCase();
-
-      if (currentKeysString !== comparisonKeysString) continue;
-
-      // Проверяем индексы ключей
-      let valuesEqual = true;
-      for (let i = 0; i < currentKeys.length; i++) {
-        const key = currentKeys[i];
-        if (key === 'number') continue; // исключить number/id/url
-        // if (key == 'id') continue;
-        if (key == 'url') continue;
-        if ( current[key] !== comparison[key] ) {
-          valuesEqual = false;
-          break;
-        }
-      }
-      if (valuesEqual) duplicatesIndices.push(comparisonIndex);
-    } // Конец цикла
-  });
-  return result;
 }
