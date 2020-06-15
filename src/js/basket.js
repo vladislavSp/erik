@@ -6,7 +6,7 @@ let basketBtns = [...document.querySelectorAll('*[data-basket-btn]')],
     basketOrder = document.querySelector('[data-basket="translate"]'),
     selectorTheme = document.querySelector('.selector__theme'),
     container = document.querySelector('[data-container]'),
-    // sect fort Good Add
+    // sect for Good Add
     addGoodBtn = document.querySelector('[data-good-btn="add"]'),
     basketCounters = [...document.querySelectorAll('*[data-basket-counter]')],
     basketFullView = document.querySelector('[data-basket-full]'),
@@ -15,30 +15,31 @@ let basketBtns = [...document.querySelectorAll('*[data-basket-btn]')],
     goodsArray = [];
 
 if (!localStorage.goods) localStorage.goods = JSON.stringify([]);
-if (basketBtns) basketBtns.forEach(el => el.addEventListener('click', changeStateBasketHandler));
+if (basketBtns) basketBtns.forEach(el => el.addEventListener('click', changeViewBasketHandler));
 if (basketViewOrderBtn) basketViewOrderBtn.addEventListener('click', viewOrderBasket);
 if (selectorTheme) selectorTheme.addEventListener('click', stateTheme);// black theme
 if (addGoodBtn) addGoodBtn.addEventListener('click', addGoodHandler);
-// ADD GOOD and ViewBasket
 
-stateViewBasket();
-countGoods();
+mainStateBasket(); // defined view or not/cost/initial render
 
-function stateViewBasket() {
+function mainStateBasket() {
   if (JSON.parse(localStorage.goods).length) {
-    showBasket(true);
+    contentViewBasket(true);
     renderGoodsList(localStorage.goods);
   } else {
-    showBasket(false);
+    contentViewBasket(false);
   }
+
+  // Счётчик товаров
+  countGoods();
 }
 
-function changeStateBasketHandler(evt) {
+function changeViewBasketHandler(evt) {
   evt.preventDefault();
   let state = this.getAttribute('data-basket-btn');
-  stateBasket(state);
+  stateViewBasket(state);
 }
-function stateBasket(state) {
+function stateViewBasket(state) {
   basket.setAttribute('data-state', `${state === 'close' ? 'open' : 'close'}`);
   state === 'close' ? ScrollControl.lock() : ScrollControl.unlock();
 }
@@ -52,7 +53,7 @@ function stateTheme() {
   document.body.classList.toggle('container--black');
   container.classList.toggle('container--black');
 }
-function showBasket(state) {
+function contentViewBasket(state) {
   basketFullView.style.display = state ? '' : 'none';
   basketEmptyView.style.display = state ? '' : 'block';
 }
@@ -65,12 +66,9 @@ function countGoods() {
 function addGoodHandler(evt) { // обр-к кнопки добавления товара
   evt.preventDefault();
   addToStorage(createObjectForStorage(this));
-  // renderGoodsList(localStorage.goods);
-  // stateViewBasket();
-  // countGoods();
 }
 
-// Формирование объекта для Storage и рендер его в корзине
+// Формирование объекта для Storage
 function createObjectForStorage(btn) {
   let obj = {};
   obj.id = btn.getAttribute('data-good-id');
@@ -85,11 +83,11 @@ function createObjectForStorage(btn) {
 function addToStorage(obj) { // obj - ранее сформированный объект
   goodsArray = JSON.parse(localStorage.goods);
 
-  if (goodsArray.every(el => el.name !== obj.name)) { // Если есть id в массиве 
+  if (goodsArray.every(el => el.id !== obj.id)) { // Если есть id в массиве 
     goodsArray.push(obj); // если добавляется, то происходит и новый рендер
     localStorage.setItem(`goods`, JSON.stringify(goodsArray));
     renderGoodsList(localStorage.goods);
-    stateViewBasket();
+    contentViewBasket(true);
     countGoods();
   }
 }
@@ -103,22 +101,39 @@ function renderGoodsList(renderItem) {
   //changeQuantityGoods(); // добавление обработчиков кнопок для плюса и минуса
 }
 
-function renderOneGood(element, i) {
-  // рендер одного элемента корзины
-  let goodTemplate = document.getElementById('goods-template').content;
-  // клон шаблона и внутр-го контента
+function renderOneGood(element, i) { // render 1 item
+  let goodTemplate = document.getElementById('goods-template').content; // клон шаблона и внутр-го контента
   let workTemplate = goodTemplate.cloneNode(true).querySelector('.basket__item');
   let deleteBtnBasket = workTemplate.querySelector('[data-basket-delete]');
 
-  workTemplate.setAttribute('id-data', i);
-  deleteBtnBasket.setAttribute('data-basket-delete', i);
-  // deleteBtnBasket.addEventListener('click', deleteGood);
+  // создать обработчики для удаления
+  deleteBtnBasket.setAttribute('data-basket-delete', element.id);
+  deleteBtnBasket.addEventListener('click', deleteGoodHandler);
+
+  workTemplate.setAttribute('id-data', element.id);
   workTemplate.querySelector('[data-goods-title]').textContent = element.title;
   workTemplate.querySelector('[data-goods-desc]').textContent = element.desc;
   workTemplate.querySelector('[data-goods-cost]').textContent = element.cost;
+  workTemplate.querySelector('[data-goods-img]').src = element.img;
+
   // workTemplate.querySelector('[data-goods-number]').textContent = element.number;
-  workTemplate.querySelector('[data-goods-img]').src = element.img; // изображение в корзине
   // if (element.number) workTemplate.querySelector('[bags="goods_price"]').textContent = element.price * element.number;
 
   return workTemplate;
+}
+
+// DELETE HANDLER
+function deleteGoodHandler() {
+  let idBlock = this.getAttribute('data-basket-delete');
+  let deleteBlock = this.parentNode;
+
+  deleteFromStorage(idBlock);
+  deleteBlock.remove();
+  countGoods();
+  if (!JSON.parse(localStorage.goods).length) contentViewBasket(false);
+}
+
+function deleteFromStorage(param) {
+  goodsArray = JSON.parse(localStorage.goods);
+  localStorage.setItem(`goods`, JSON.stringify(goodsArray.filter(el => el.id !== param)));
 }
