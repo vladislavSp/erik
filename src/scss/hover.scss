@@ -1,0 +1,10 @@
+.card__small-img {
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.4;
+  }
+}
+.card__small-img[state="enable"] {
+  opacity: 0.4;
+}
