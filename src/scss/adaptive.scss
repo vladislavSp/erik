@@ -9,6 +9,9 @@
   .main-title {
     font-size: calc(100vw - 86.8vmax); // адаптивный заголовок
   }
+  .card__right {
+    height: calc(100vh - 8.25rem);
+  }
 }
 
 @media (max-width: 1800px) and (min-width: 1601px) {
@@ -182,10 +185,6 @@
   .card__cost-wrap {
     margin-bottom: 2rem;
   }
-  .card__btn-wrap {
-    margin-top: 8rem;
-  }
-
 
 
   // ORDER
@@ -299,9 +298,6 @@
   }
   .card__title {
     font-size: 2.5rem;
-  }
-  .card__btn-wrap {
-    margin-top: 5rem;
   }
 
 

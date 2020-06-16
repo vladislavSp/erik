@@ -1,5 +1,9 @@
 .basket__full {
   overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .basket__item:last-child {
