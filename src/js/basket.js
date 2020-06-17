@@ -4,7 +4,6 @@ let basketBtns = [...document.querySelectorAll(`*[data-basket-btn]`)],
     basket = document.querySelector(`[data-basket]`),
     basketViewOrderBtn = document.querySelector(`[data-order-basket="btn"]`),
     basketOrder = document.querySelector(`[data-basket="translate"]`),
-    basketWrap = document.querySelector(`.basket-wrap`),
     // selectorTheme = document.querySelector(`.selector__theme`),
     // container = document.querySelector(`[data-container]`),
 
@@ -18,6 +17,7 @@ let basketBtns = [...document.querySelectorAll(`*[data-basket-btn]`)],
     const ESC_CODE = 27;
 
 if (!localStorage.goods) localStorage.goods = JSON.stringify([]);
+if (location.pathname === `/order` && !JSON.parse(localStorage.goods).length) location.href = `/`;
 if (basketBtns) basketBtns.forEach(el => el.addEventListener(`click`, changeViewBasketHandler));
 if (basketViewOrderBtn) basketViewOrderBtn.addEventListener(`click`, viewOrderBasket);
 // if (selectorTheme) selectorTheme.addEventListener(`click`, stateTheme);// black theme
@@ -44,18 +44,19 @@ function changeViewBasketHandler(evt) {
 }
 
 function stateViewBasket(state) {
-  // console.log(state);
-
   basket.setAttribute(`data-state`, `${state === `open` ? `open` : `close`}`);
-  basketWrap.style.display = state === `open` ? `block` : `none`;
-  basketWrap[state === `open` ? `addEventListener` : `removeEventListener`](`click`, clickCloseHandler);
-  document[state===`open` ? `addEventListener` : `removeEventListener`](`keydown`, buttonCloseHandler);
+  document[state === `open` ? `addEventListener` : `removeEventListener`](`click`, clickCloseHandler);
+  document[state ===`open` ? `addEventListener` : `removeEventListener`](`keydown`, buttonCloseHandler);
 }
 
+// Listeners
 function clickCloseHandler(evt) {
-  if (this === evt.target || evt.target.hasAttribute(`data-basket-btn`)) {
+  let target = evt.target.closest(`div[data-basket="basket"]`);
+  // console.log(target, evt.target.hasAttribute(`data-closest-attr`));
+  if (evt.target.hasAttribute(`data-closest-attr`)) return;
+  else if (!target) {
     stateViewBasket(`close`);
-    basketWrap.removeEventListener(`click`, clickCloseHandler);
+    document.removeEventListener(`click`, clickCloseHandler);
   }
 }
 
@@ -71,12 +72,6 @@ function viewOrderBasket(evt) { // fn for order-page
   basketOrder.classList.toggle(`basket-translate`);
   this.textContent = basketOrder.classList.contains(`basket-translate`) ? `Показать корзину` : `Скрыть корзину`;
 }
-
-// function stateTheme() {
-//   this.classList.toggle(`selector__active`);
-//   document.body.classList.toggle(`container--black`);
-//   container.classList.toggle(`container--black`);
-// }
 
 function contentViewBasket(state) {
   basketFullView.style.display = state ? `` : `none`;
@@ -119,7 +114,7 @@ function addToStorage(obj) { // obj - ранее сформированный о
     contentViewBasket(true);
     countGoods();
     createTotalCost();
-  }
+  } else return;
 }
 
 // Render goods
@@ -130,10 +125,10 @@ function renderGoodsList(renderItem) {
   if (goods) goods.forEach((el, index) => basketContainer.appendChild(renderOneGood(el, index)));
 }
 
-function renderOneGood(element, i) { // render 1 item
-  let goodTemplate = document.getElementById(`goods-template`).content; // клон шаблона и внутр-го контента
-  let workTemplate = goodTemplate.cloneNode(true).querySelector(`.basket__item`);
-  let deleteBtnBasket = workTemplate.querySelector(`[data-basket-delete]`);
+function renderOneGood(element, i) { // render one item
+  let goodTemplate = document.getElementById(`goods-template`).content, // клон шаблона и внутр-го контента
+      workTemplate = goodTemplate.cloneNode(true).querySelector(`.basket__item`),
+      deleteBtnBasket = workTemplate.querySelector(`[data-basket-delete]`);
 
   // обработчик для удаления
   deleteBtnBasket.setAttribute(`data-basket-delete`, element.id);
@@ -162,7 +157,10 @@ function deleteGoodHandler() {
   countGoods();
 
   // Если все товары удалены
-  if (!JSON.parse(localStorage.goods).length) contentViewBasket(false);
+  if (!JSON.parse(localStorage.goods).length) {
+    contentViewBasket(false);
+    if(location.pathname === `/order`) location.href = `/`; // redirmain
+  }
   else createTotalCost();
 }
 
@@ -195,3 +193,10 @@ function createTotalCost() {
 
   basketField.textContent = String(totalCost).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `); // разделение разрядов числа
 }
+
+
+// function stateTheme() {
+//   this.classList.toggle(`selector__active`);
+//   document.body.classList.toggle(`container--black`);
+//   container.classList.toggle(`container--black`);
+// }

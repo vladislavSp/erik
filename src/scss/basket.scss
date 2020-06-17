@@ -10,6 +10,27 @@
   border-bottom: none;
 }
 
+.basket {
+  transition: transform 0.3s ease;
+}
+
+.basket__wrapper {
+  transition: transform 0.25s ease;
+  transition-delay: 0.1s;
+}
+
+.basket[data-state="close"] {
+  transform: translateX(110%);
+
+  & .basket__wrapper {
+    transform: translateX(100%);
+  }
+}
+
 .basket[data-state="open"] {
-  display: block;
+  transform: translateX(0%);
+
+  & .basket__wrapper {
+    transform: translateX(0%);
+  }
 }
