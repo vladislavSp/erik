@@ -20,8 +20,12 @@ if (!localStorage.goods) localStorage.goods = JSON.stringify([]);
 if (location.pathname === `/order` && !JSON.parse(localStorage.goods).length) location.href = `/`;
 if (basketBtns) basketBtns.forEach(el => el.addEventListener(`click`, changeViewBasketHandler));
 if (basketViewOrderBtn) basketViewOrderBtn.addEventListener(`click`, viewOrderBasket);
-// if (selectorTheme) selectorTheme.addEventListener(`click`, stateTheme);// black theme
 if (addGoodBtn) addGoodBtn.addEventListener(`click`, addGoodHandler);
+
+
+//blacktheme
+// if (selectorTheme) selectorTheme.addEventListener(`click`, stateTheme);
+
 
 mainStateBasket(); // defined main initial state basket
 
@@ -44,6 +48,8 @@ function changeViewBasketHandler(evt) {
 }
 
 function stateViewBasket(state) {
+  console.log(state);
+  
   basket.setAttribute(`data-state`, `${state === `open` ? `open` : `close`}`);
   document[state === `open` ? `addEventListener` : `removeEventListener`](`click`, clickCloseHandler);
   document[state ===`open` ? `addEventListener` : `removeEventListener`](`keydown`, buttonCloseHandler);
