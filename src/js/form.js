@@ -1,9 +1,12 @@
 let checkboxWrap = document.querySelector(`[data-order-check]`),
-    inputFields = [...document.querySelectorAll(`*[data-order-field]`)];
+    inputFields = [...document.querySelectorAll(`*[data-order-field]`)],
+    orderBtn = document.querySelector(`[data-send-order]`);
 
 if (inputFields.length) {
-  inputFields.forEach(el => el.addEventListener(`focus`, resetInvalid));
-  inputFields.forEach(el => validationHandler(el));
+  inputFields.forEach(el => {
+    validationHandler(el);
+    el.addEventListener(`input`, checkValidation);
+  });
 }
 if (checkboxWrap) checkboxWrap.addEventListener(`click`, checkboxClickHandler);
 
@@ -11,10 +14,11 @@ if (checkboxWrap) checkboxWrap.addEventListener(`click`, checkboxClickHandler);
 
 // VALIDATION
 function validationHandler(elem) {
-  if (elem.getAttribute(`data-validation`) === `text`) elem.addEventListener(`input`, textFieldValidation);
-  else if (elem.getAttribute(`data-validation`) === `phone`) elem.addEventListener(`input`, phoneValidation);
-  else if (elem.getAttribute(`data-validation`) === `mail`) elem.addEventListener(`input`, mailValidation);
-  else if (elem.getAttribute(`data-validation`) === `index`) elem.addEventListener(`input`, indexValidation);
+  let value = elem.dataset.validation;
+
+  if (value === `text`) elem.addEventListener(`input`, textFieldValidation);
+  else if (value === `number`) elem.addEventListener(`input`, numberValidation);
+  else if (value === `mail`) elem.addEventListener(`input`, mailValidation);
 }
 
 
@@ -30,38 +34,57 @@ function textFieldValidation() {
     initArr.splice(num, 1); // удаление этого ввода
     this.value = initArr.join(''); // подстановка значения без цифр
   }
+
+  if (this.value === ` `) this.value = this.value.trim(); //удаление первого пробела
+
+  if (this.value.length > 0) this.dataset.state = `valid`;
+  else if (this.value === ``) this.dataset.state = ``;
 }
 
-function phoneValidation() {
+function numberValidation() {
   this.value = this.value.replace(/[^\d.]/g, '');
+  if (this.value !== ``) this.dataset.state = `valid`;
+  else this.dataset.state = ``;
 }
 
 function mailValidation () {
   let mailExp = /\S+@\S+\.\S+/;
   if (this.value.match(mailExp)) this.dataset.state = `valid`;
+  else if (this.value === ``) this.dataset.state = ``;
   else this.dataset.state = `invalid`;
 }
 
-function indexValidation () {
-  console.log(this);
-}
-
-// RESET INPUT ON FOCUS
-function resetInvalid() {
-  if (this.dataset.state === `invalid`) this.dataset.state = ``;
-}
 
 
 // CHECKBOX
 function checkboxClickHandler() {
   this.dataset.state = this.dataset.state === `check` ? `` : `check`;
+  checkValidation();
 }
+
+function checkValidation() {
+  let fieldComplete = inputFields.every(el => el.dataset.state === `valid`);
+  let checkboxCheck = checkboxWrap.dataset.state === `check`;
+  
+  if (fieldComplete && checkboxCheck) {
+    console.log(`Пройдено`);
+    orderBtn.dataset.state = `order`;
+  } else {
+    console.log(`Не пройдено`);
+    
+    orderBtn.dataset.state = ``;
+  }
+}
+
 
 // ymaps.ready(init);
 
 // function init() {
-//     // Создаем выпадающую панель с поисковыми подсказками и прикрепляем ее к HTML-элементу по его id.
-//     var suggestView1 = new ymaps.SuggestView('suggest1');
-//     // Задаем собственный провайдер поисковых подсказок и максимальное количество результатов.
-//     var suggestView2 = new ymaps.SuggestView('suggest2', {provider: provider, results: 3});
+//   ymaps.geocode(`Поле поиска`, {
+
+//   }).then((res) => {
+//     var firstGeoObject = res.geoObjects.get(0);
+//     console.log(firstGeoObject);
+//     console.log(`Все данные объекта: `, firstGeoObject.properties.getAll());
+//   });
 // }

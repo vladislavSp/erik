@@ -14,7 +14,8 @@ let basketBtns = [...document.querySelectorAll(`*[data-basket-btn]`)],
     basketEmptyView = document.querySelector(`[data-basket-empty]`),
     basketContainer = document.querySelector(`[data-basket-list]`),
     goodsArray = [];
-    const ESC_CODE = 27;
+
+const ESC_CODE = 27;
 
 if (!localStorage.goods) localStorage.goods = JSON.stringify([]);
 if (location.pathname === `/order` && !JSON.parse(localStorage.goods).length) location.href = `/`;
@@ -48,8 +49,6 @@ function changeViewBasketHandler(evt) {
 }
 
 function stateViewBasket(state) {
-  console.log(state);
-  
   basket.setAttribute(`data-state`, `${state === `open` ? `open` : `close`}`);
   document[state === `open` ? `addEventListener` : `removeEventListener`](`click`, clickCloseHandler);
   document[state ===`open` ? `addEventListener` : `removeEventListener`](`keydown`, buttonCloseHandler);
@@ -106,6 +105,7 @@ function createObjectForStorage(btn) {// Формирование объекта
   obj.cost = btn.getAttribute(`data-good-cost`);
   obj.desc = btn.getAttribute(`data-good-desc`);
   obj.img = btn.getAttribute(`data-good-img`);
+  obj.number = 1;
 
   return obj;
 }
@@ -123,6 +123,7 @@ function addToStorage(obj) { // obj - ранее сформированный о
   } else return;
 }
 
+
 // Render goods
 function renderGoodsList(renderItem) {
   let goods = JSON.parse(renderItem); //render good in basket from LS
@@ -131,14 +132,17 @@ function renderGoodsList(renderItem) {
   if (goods) goods.forEach((el, index) => basketContainer.appendChild(renderOneGood(el, index)));
 }
 
-function renderOneGood(element, i) { // render one item
+function renderOneGood(element) { // render one item
   let goodTemplate = document.getElementById(`goods-template`).content, // клон шаблона и внутр-го контента
       workTemplate = goodTemplate.cloneNode(true).querySelector(`.basket__item`),
-      deleteBtnBasket = workTemplate.querySelector(`[data-basket-delete]`);
+      deleteBtnBasket = workTemplate.querySelector(`[data-basket-delete]`),
+      counterGoods = workTemplate.querySelector(`[data-signs="listener"]`);
 
   // обработчик для удаления
   deleteBtnBasket.setAttribute(`data-basket-delete`, element.id);
   deleteBtnBasket.addEventListener(`click`, deleteGoodHandler);
+  counterGoods.setAttribute(`data-good-count`, `${element.id}`);
+  counterGoods.addEventListener(`click`, controlNumberHandler);
 
   workTemplate.setAttribute(`id-data`, element.id);
   workTemplate.querySelector(`[data-goods-title]`).textContent = element.title;
@@ -146,17 +150,18 @@ function renderOneGood(element, i) { // render one item
   workTemplate.querySelector(`[data-goods-cost]`).setAttribute(`data-goods-cost`, element.cost);
   workTemplate.querySelector(`[data-goods-cost]`).textContent = element.cost.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `);
   workTemplate.querySelector(`[data-goods-img]`).src = element.img;
+  workTemplate.querySelector(`[data-goods-number]`).textContent = element.number;
 
-  // workTemplate.querySelector(`[data-goods-number]`).textContent = element.number;
   // if (element.number) workTemplate.querySelector(`[bags="goods_price"]`).textContent = element.price * element.number;
 
   return workTemplate;
 }
 
+
 // Delete from Storage
 function deleteGoodHandler() {
   let idBlock = this.getAttribute(`data-basket-delete`);
-  let deleteBlock = this.parentNode;
+  let deleteBlock = this.parentNode.closest(`div.basket__item`);
 
   deleteFromStorage(idBlock);
   deleteBlock.remove();
@@ -177,17 +182,26 @@ function deleteFromStorage(param) {
 
 // Create Total Cost in Basket
 function totalCostFn() {
-  const elements = [...document.querySelectorAll(`*[data-goods-cost]`)];
-  const costs = elements.map(el => Number(el.getAttribute(`data-goods-cost`)));
-  const reducer = (acc, curVal) => acc + curVal;
+  goodsArray = JSON.parse(localStorage.goods);
 
-  return costs.reduce(reducer);
+  // const elements = [...document.querySelectorAll(`*[data-goods-cost]`)];
+  // const costs = elements.map(el => Number(el.getAttribute(`data-goods-cost`)));
+
+  // const reducer = (acc, curVal) => acc + curVal;
+
+  let sum = 0;
+
+  goodsArray.forEach(el => sum = sum + Number(el.cost) * el.number);
+
+  return sum;
 }
 
 function createTotalCost() {
-  let basketField = document.querySelector(`.basket__total-in`);
-  let subtotalField = document.querySelector(`[data-basket-subtotal]`);
-  let deliveryField = document.querySelector(`[data-basket-delivery]`);
+  let basketField = document.querySelector(`.basket__total-in`),
+      subtotalField = document.querySelector(`[data-basket-subtotal]`),
+      deliveryField = document.querySelector(`[data-basket-delivery]`),
+      orderBtnCost = document.querySelector(`.order__btn-cost`);
+
   let totalCost = totalCostFn();
 
   if (subtotalField) subtotalField.textContent = String(totalCost).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `);
@@ -197,8 +211,45 @@ function createTotalCost() {
     totalCost = totalCost + Number(deliveryCost); // для будущего рендера доставки
   }
 
+  // Кнопка заказа
+  if (orderBtnCost) orderBtnCost.textContent = totalCost;
+
   basketField.textContent = String(totalCost).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `); // разделение разрядов числа
 }
+
+function controlNumberHandler(event) {
+  let target = event.target,
+      good = this.getAttribute(`data-good-count`),
+      fieldCount = this.querySelector(`.basket__number-good`);
+
+  if (target.classList.contains(`basket__minus`)) goodsCountChange(good, false, fieldCount);
+  else if (target.classList.contains(`basket__plus`)) goodsCountChange(good, true, fieldCount);
+  else return;
+}
+
+function goodsCountChange(good, state, field) {
+  goodsArray = JSON.parse(localStorage.goods);
+  let searchGood = goodsArray.find(el => el.id === good);
+  
+  searchGood.number = countNumber(state, field, searchGood.number);
+
+  localStorage.setItem("goods", JSON.stringify(goodsArray));
+  createTotalCost();
+}
+
+function countNumber(state, field, num) {
+  if (state) num = num + 1;
+  else {
+    if (num === 1) num = 1;
+    else num = num - 1;
+  }
+  field.textContent = num;
+
+  return num;
+}
+
+// export default createTotalCost;
+
 
 
 // function stateTheme() {

@@ -19,3 +19,24 @@
     display: flex;
   }
 }
+
+.order__field[data-state="invalid"] {
+  border-color: rgb(255, 20, 20);
+}
+.order__field[data-state="valid"] {
+  border-color: rgb(0, 0, 0);
+}
+
+.order__btn {
+  pointer-events: none;
+}
+
+.order__btn[data-state="order"] {
+  pointer-events: all;
+  cursor: pointer;
+  background-color: #00C74F;
+
+  & .order__btn-wrap {
+    display: inline;
+  }
+}
