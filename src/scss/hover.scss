@@ -6,14 +6,142 @@
       opacity: 0.4;
     }
   }
+
   .card__small-img[state="enable"] {
     opacity: 0.4;
   }
   
   .desc__title {
-    // transition: text-decoration 0.2s ease;
     &:hover {
       text-decoration: underline;
+    }
+  }
+
+  .header__item, .header__basket, .basket__close-btn, .footer__mail, .footer__link, .card__link, .info__mail, .footer__rus, .footer__eng {
+    transition: color 0.2s ease;
+  }
+
+  .card__emb svg path {
+    transition: stroke 0.2s ease;
+  }
+
+  .desc__btn, .basket__footer-btn {
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .card__btn {
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .header__item, .footer__mail, .footer__link {
+    &:hover {
+      color: #000;
+    }
+  }
+
+  .header__basket, .info__mail {
+    &:hover {
+      color: #888;
+    }
+  }
+
+  .basket__close-btn, .desc__btn, .card__btn {
+    &:hover {
+      color: white;
+    }
+  }
+
+  .desc__btn, .card__btn {
+    &:hover {
+      background-color: black;
+    }
+  }
+
+  .basket__footer-btn {
+    &:hover {
+      color: white;
+      background-color: #00C74F;
+    }
+  }
+
+  .controls__btn {
+    &:hover svg path {
+      stroke: #888;
+    }
+    &--disabled svg path {
+      &:hover {
+        stroke: #9A9A9A;
+      }
+    }
+  }
+
+
+  .card__link {
+    &:hover {
+      color: black;
+
+      & .card__emb svg path {
+        stroke: black;
+      }
+    }
+  }
+
+  .footer__rus, .footer__eng {
+    &:hover {
+      color: black;
+    }
+  }
+  // BLACK THEME HOVER
+  .container--black {
+    .header__item {
+      &:hover {
+        color: white;
+      }
+    }
+    .header__basket {
+      &:hover {
+        color: #888;
+      }
+    }
+    & .basket__close-btn:hover {
+      color: #888;
+    }
+    & .basket__footer-btn:hover {
+      background-color: #00C74F;
+    }
+
+    & .desc__btn:hover {
+      color: black;
+      background-color: white;
+    }
+
+    & .footer__mail, & .footer__link {
+      &:hover {
+        color: white;
+      }
+    }
+
+    & .card__link {
+      &:hover {
+        color: white;
+  
+        & .card__emb svg path {
+          stroke: white;
+        }
+      }
+    }
+    & .card__btn:hover {
+      background-color: #00C74F;
+    }
+
+    & .info__mail:hover {
+      color: #888;
+    }
+
+    & .footer__rus, & .footer__eng {
+      &:hover {
+        color: white;
+      }
     }
   }
 }

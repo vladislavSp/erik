@@ -19,6 +19,7 @@ function validationHandler(elem) {
   if (value === `text`) elem.addEventListener(`input`, textFieldValidation);
   else if (value === `number`) elem.addEventListener(`input`, numberValidation);
   else if (value === `mail`) elem.addEventListener(`input`, mailValidation);
+  else if (value === `address`) elem.addEventListener(`input`, addressValidation);
 }
 
 
@@ -54,6 +55,10 @@ function mailValidation () {
   else this.dataset.state = `invalid`;
 }
 
+function addressValidation() {
+  if (this.value.length > 0) this.dataset.state = `valid`;
+  else if (this.value === ``) this.dataset.state = ``;
+}
 
 
 // CHECKBOX
@@ -65,16 +70,24 @@ function checkboxClickHandler() {
 function checkValidation() {
   let fieldComplete = inputFields.every(el => el.dataset.state === `valid`);
   let checkboxCheck = checkboxWrap.dataset.state === `check`;
-  
-  if (fieldComplete && checkboxCheck) {
-    console.log(`Пройдено`);
-    orderBtn.dataset.state = `order`;
-  } else {
-    console.log(`Не пройдено`);
-    
-    orderBtn.dataset.state = ``;
-  }
+
+  orderBtn[fieldComplete && checkboxCheck ? `addEventListener` : `removeEventListener`](`click`, senFormsHandler);
+  orderBtn.dataset.state = fieldComplete && checkboxCheck ? `order` : ``;
 }
+
+
+function senFormsHandler() {
+  let sendObj = {}, sendJson;
+
+  inputFields.forEach(el => {
+    sendObj[el.getAttribute(`data-order-field`)] = el.value;
+  });
+
+  sendObj.goods = JSON.parse(localStorage.goods);
+  sendJson = JSON.stringify(sendObj);
+  console.log(sendJson);
+}
+
 
 
 // ymaps.ready(init);

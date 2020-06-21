@@ -152,8 +152,6 @@ function renderOneGood(element) { // render one item
   workTemplate.querySelector(`[data-goods-img]`).src = element.img;
   workTemplate.querySelector(`[data-goods-number]`).textContent = element.number;
 
-  // if (element.number) workTemplate.querySelector(`[bags="goods_price"]`).textContent = element.price * element.number;
-
   return workTemplate;
 }
 
@@ -182,15 +180,8 @@ function deleteFromStorage(param) {
 
 // Create Total Cost in Basket
 function totalCostFn() {
-  goodsArray = JSON.parse(localStorage.goods);
-
-  // const elements = [...document.querySelectorAll(`*[data-goods-cost]`)];
-  // const costs = elements.map(el => Number(el.getAttribute(`data-goods-cost`)));
-
-  // const reducer = (acc, curVal) => acc + curVal;
-
   let sum = 0;
-
+  goodsArray = JSON.parse(localStorage.goods);
   goodsArray.forEach(el => sum = sum + Number(el.cost) * el.number);
 
   return sum;

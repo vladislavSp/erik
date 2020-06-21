@@ -5,7 +5,9 @@
   // ГЛАВНАЯ + header/footer
   & .header {
     background-color: black;
-
+    & .header__wrap {
+      border-color: #333;
+    }
     & .header__svg path {
       fill: white;
     }
@@ -39,11 +41,17 @@
       background-color: black;
     }
   }
+  & .main-title svg path {
+    fill: white;
+  }
   & .main-title, & .catalog, & .desc, & .bio, & .footer, & .info {
     border-color: #333333;
   }
   & .shop, & .catalog__title, & .catalog__cost, & .collection__prev, & .footer, & .footer__mail, & .footer__link {
     color: #9A9A9A;
+  }
+  & .preview__link {
+    color: white;
   }
   & .desc__btn {
     border-color: white;
@@ -80,6 +88,11 @@
   & .basket__close-btn {
     color: black;
   }
+  & .basket__minus, & .basket__plus {
+    &::after, &::before {
+      background-color: #888;
+    }
+  }
 
 
   // CARD
@@ -92,16 +105,22 @@
 
 
   // ORDER
-  .order__field {
+  & .order__field {
     color: white;
     border-color: white;
 
     &::placeholder {
       color: #9A9A9A;
     }
+    &[data-state="invalid"] {
+      border-color: #ff1414;
+    }
   }
   & .order__checkbox {
     border-color: white;
+    & svg path {
+      stroke: white;
+    }
   }
   & .order__cb-group, & .order__link {
     color: white;
@@ -122,13 +141,6 @@
     stroke: #9A9A9A;
   }
   & .header--order {
-    background-color: white;
-    & .header__emb--order {
-      & .header__svg path {
-        fill: black;
-      }
-    }
-
     & .header__wrap {
       border-color: #C4C4C4;
     }

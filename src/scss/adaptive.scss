@@ -328,6 +328,9 @@
   .basket-translate {
     margin-top: -32.5rem;
   }
+  .container {
+    overflow-x: hidden;
+  }
 }
 
 @media (max-width: 767px) {
@@ -338,4 +341,8 @@
   .shop__item:last-child {
     margin-right: 0;
   }
+}
+
+.collection {
+  overflow-x: hidden;
 }

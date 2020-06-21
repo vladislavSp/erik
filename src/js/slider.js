@@ -5,12 +5,12 @@ if (collCont) {
   let colSlider = new Swiper(collCont, {
     wrapperClass: 'collection__wrap',
     slideClass: 'collection__item',
-    slidesPerView: 'auto',
+    slidesPerView: 1,
     speed: 600,
 
     navigation: {
-      nextEl: '.contols__btn[data-control-col="right"]',
-      prevEl: '.contols__btn[data-control-col="left"]',
+      nextEl: '.controls__btn[data-control-col="right"]',
+      prevEl: '.controls__btn[data-control-col="left"]',
       disabledClass: 'controls__btn--disabled',
     },
   });
