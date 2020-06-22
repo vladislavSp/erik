@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Mon Jun 22 2020 09:21:17 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="5eda1030661a4050eba996eb" data-wf-site="5ed8dce972d3213ccc3372e7">
+<head>
+  <meta charset="utf-8">
+  <title>Order</title>
+  <meta content="Order" property="og:title">
+  <meta content="Order" property="twitter:title">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Webflow" name="generator">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/erik-musin.webflow.css" rel="stylesheet" type="text/css">
+  <!-- [if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" type="text/javascript"></script><![endif] -->
+  <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+  <link href="images/webclip.png" rel="apple-touch-icon">
+  <link rel="stylesheet" type="text/css" href="https://host.choice.studio/erik/style.css?ver=7">
+  <link rel="stylesheet" type="text/css" href="https://host.choice.studio/erik/swiper.min.css">
+  <script src="https://host.choice.studio/erik/swiper.min.js"></script>
+  <script src="https://host.choice.studio/erik/gsap.min.js"></script>
+  <script src="https://api-maps.yandex.ru/2.1/?apikey=bad00391-91c9-4088-9685-ead2f2567e53&lang=ru_RU" type="text/javascript">
+</script>
+</head>
+<body class="body">
+  <div data-container="0" class="container">
+    <div class="header header--order">
+      <div class="header__wrap">
+        <a href="index.html" class="header__link w-inline-block">
+          <div class="header__emb--order w-embed"><svg class="header__svg" width="114" height="40" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0)" fill="#000"><path d="M28.125 0c.2.099.4.099.6.099.2 0 .3 0 .4-.099 2.903 0 6.106.593 9.409 1.778 0 .099.5.296 1.401.592 0 .1.9.692 2.602 1.778C44.24 5.63 45.44 7.012 46.04 8.296c.3.692.6 1.778.801 3.457 0 1.284-.5 2.864-1.501 4.543-1.902 2.173-3.403 3.26-4.504 3.556-2.903 1.58-5.905 2.272-8.808 2.272v-.1c-.5 0-1 1.087-1.601 3.359-1.001 2.765-2.202 5.037-3.704 6.617-1.701 2.37-4.003 4.346-6.706 5.728-2.702 1.482-5.704 2.173-8.907 2.173-3.203 0-5.805-.691-7.707-2.074-.4-.197-1.101-.691-2.102-1.58-.9-1.383-1.401-2.47-1.501-3.26v-.493c0-2.37 1-3.95 3.002-4.543.2 0 .3 0 .3-.099 1.402 0 2.203.691 2.403 2.074v.691c0 .692-.4 1.58-1.301 2.667 0 .099-.1.395-.3.889.2.988.6 1.778 1.2 2.568 1.202 1.383 3.103 2.074 5.605 2.074 2.202 0 4.004-.593 5.605-1.778 1.702-.889 3.303-2.666 4.905-5.234 1-1.284 2.402-4.544 4.203-9.68 1.702-4.049 3.503-7.21 5.205-9.678 2.702-3.26 4.904-4.84 6.706-4.84l.1.198c-1.702 2.469-3.003 5.135-4.004 8-1 2.765-1.501 4.543-1.501 5.234h.1c.1.099.2.099.3.099 1.402 0 3.203-.79 5.305-2.47 1.902-1.777 3.003-3.555 3.303-5.135.1 0 .4-.889.6-2.568 0-3.753-1.5-6.518-4.604-8.099C34.63 1.482 32.028.79 28.925.79c-4.704 0-9.308 1.58-13.812 4.84-2.002 1.679-3.303 3.16-3.903 4.148-1.301 2.173-2.102 4.05-2.402 5.53.2.495.1.79 0 1.087l.1.198c-.1.494-.2.987-.2 1.481 0 .099 0 .099.1.296l-.1.396c0 1.975 1 3.654 2.902 4.84 1.001.493 1.802.69 2.202.69h.7c1.802 0 3.103-.69 4.104-2.172.2-.297.3-.494.3-.692v-.098c0-.396-.1-1.087-.2-1.976.1-1.086.6-1.58 1.402-1.58 0-.099.1-.099.3-.099h.6c1.101.296 1.602.692 1.602 1.185.1 0 .2.297.3.79v.1c0 1.58-1 2.962-3.003 4.147-1.901.89-3.803 1.284-5.605 1.186-1.801-.1-3.202-.395-4.303-.89-3.804-1.975-5.605-4.839-5.605-8.394.3-2.075.7-3.655 1.401-4.84.6-.988 1.501-2.074 2.903-3.457 1.601-1.481 3.202-2.666 4.804-3.555 1.701-.988 3.903-1.877 6.505-2.766.801-.395 3.203-.79 7.207-1.284.4.198.7.198.9.1zM51.945 17.679c.5.099.8.395.8.79 0 .197-.4 1.086-1.2 2.864-.2.593-.2.889.2.988.2-.1.4-.1.6-.297h.3c.1 0 .2.1.3.297v.197c0 .692-.4 1.185-1.2 1.68-.8.493-1.602.592-2.502.296-.901-.297-1.302-1.186-1.302-2.766-.8.296-1.701 1.68-2.702 4.346L42.837 31.9h-3.703l6.005-13.63h3.103l-.6 2.173c1.3-1.185 2.201-1.876 2.902-2.271.5-.297 1-.494 1.401-.494z"></path><path d="M61.354 17.284c1.702.099 2.502.79 2.602 2.173-.2 1.086-.8 2.074-1.701 2.963-.901.889-1.902 1.58-3.003 2.074-1.1.494-2.502.889-4.204 1.284-.3.988-.5 1.975-.4 2.765.1.89.3 1.383.6 1.58.3.198.901.198 1.602.198.7-.099 2.002-.79 3.703-2.271v1.086c-1.801 1.975-3.703 2.963-5.705 2.963-1.3 0-2.202-.395-2.902-1.086-.6-.692-.901-1.68-.901-2.963.1-1.284.4-2.568 1-3.951.601-1.383 1.502-2.568 2.703-3.753 1.201-1.087 2.402-1.877 3.603-2.272 1.201-.395 2.202-.79 3.003-.79zm-5.705 7.111c1.902 0 3.603-1.284 5.204-3.654.501-.691.801-1.383.801-2.074 0-.395-.2-.593-.5-.692-1.702.1-3.503 2.272-5.505 6.42zM72.764 14.321c-1.701 1.877-2.502 3.062-2.502 3.753.8 2.47 1.301 4.741 1.501 6.914 0 2.765-1.1 4.84-3.403 6.42-.9.395-1.701.592-2.402.592-.9 0-1.802-.197-2.702-.691-.901-.395-1.301-1.086-1.401-1.877 0-1.284.3-2.074.8-2.567 1.001-1.087 3.503-4.939 7.507-11.556.3-.593.9-1.086 1.601-1.481.7-.297 1.001-.1 1.001.493zm-7.807 11.852c.7.593 1.101 1.185 1.201 1.877.1.691-.2 1.481-.9 2.271-.2.297-.1.494.4.593 1.401 0 2.302-.79 2.702-2.47.4-1.678.5-3.16.2-4.444-.2-1.284-.5-1.975-.9-1.975-.6.691-1.502 2.074-2.703 4.148zM82.172 17.284c1.702.099 2.502.79 2.603 2.173-.2 1.086-.801 2.074-1.702 2.963-.9.889-1.902 1.58-3.002 2.074-1.102.494-2.503.889-4.204 1.284-.3.988-.5 1.975-.4 2.765.1.89.3 1.383.6 1.58.3.198.9.198 1.601.198.701-.099 2.002-.79 3.704-2.271v1.086c-1.802 1.975-3.704 2.963-5.705 2.963-1.302 0-2.202-.395-2.903-1.086-.6-.692-.9-1.68-.9-2.963.1-1.284.4-2.568 1-3.951s1.501-2.568 2.703-3.753c1.2-1.087 2.402-1.877 3.603-2.272 1.2-.592 2.202-.79 3.002-.79zm-5.805 7.111c1.902 0 3.603-1.284 5.205-3.654.5-.691.8-1.383.8-2.074 0-.395-.2-.593-.5-.692-1.601.1-3.503 2.272-5.505 6.42z"></path><path d="M94.983 18.074c.6.197.901.593.901 1.284 0 .691-.4 1.778-1.1 3.26l-2.103 4.938c-.2.69-.4 1.185-.4 1.481 0 .296.3.395.8.395.601-.099 1.802-1.185 3.804-3.358v1.877c0 .296-.9 1.185-2.502 2.469-1.602 1.284-3.103 1.975-4.404 1.975-1.301 0-1.902-.691-1.701-2.074.1-1.383 1.1-3.95 2.802-7.704.4-.889.7-1.58.7-2.074.1-.494-.1-.691-.5-.592-1.1.098-3.603 4.148-7.707 11.851H80.07l6.506-13.63h2.903c-.3.89-.601 1.68-.701 2.174 1.301-1.383 2.502-2.173 3.503-2.272 1.301-.198 2.102-.099 2.702 0z"></path><path d="M102.39 12.346h3.403l-2.302 5.63h2.402l-.301.888h-2.602l-3.603 7.704c-.3.691-.5 1.284-.6 1.975-.1.692.1.988.6.988 1.101 0 2.502-1.185 4.304-3.654v1.481c-.401.889-1.201 1.877-2.202 2.864-1.001.988-2.202 1.482-3.403 1.482-1.301.098-2.102-.593-2.402-1.976-.3-1.876.9-5.53 3.603-10.963h-1.702v-.79h2.102l2.703-5.63z"></path><path d="M113.999 14.321c-1.701 1.877-2.502 3.062-2.502 3.753.801 2.47 1.301 4.741 1.502 6.914 0 2.765-1.101 4.84-3.403 6.42-.901.395-1.702.592-2.403.592-.9 0-1.801-.197-2.702-.691-.901-.395-1.301-1.086-1.401-1.877 0-1.284.3-2.074.801-2.567 1-1.087 3.503-4.939 7.506-11.556.3-.593.901-1.086 1.602-1.481.8-.297 1.1-.1 1 .493zm-7.706 11.852c.7.593 1.101 1.185 1.201 1.877.1.691-.2 1.481-.901 2.271-.2.297-.1.494.4.593 1.401 0 2.302-.79 2.703-2.47.4-1.678.5-3.16.2-4.444-.2-1.284-.501-1.975-.901-1.975-.601.691-1.501 2.074-2.702 4.148z"></path></g><defs><clippath id="clip0"><path fill="#fff" d="M0 0h114v40H0z"></path></clippath></defs></svg></div>
+        </a><a data-order-basket="btn" href="#" class="header__view-btn">Показать корзину</a></div>
+    </div>
+    <div data-basket="translate" class="basket--order basket-translate">
+      <div class="basket__wrapper--order">
+        <div class="basket__name--order">корзина</div>
+        <div data-basket-full="1" class="basket__full">
+          <div data-basket-list="true" class="basket__list--order">
+            <div class="basket__item"><img src="images/basket-goods-min.jpg" alt="" class="basket__image">
+              <div class="basket__main-wrap">
+                <div class="basket__title-wrap">
+                  <div class="basket__desc-wrap">
+                    <h4 class="basket__title">The Legendary <br>McDonald’s Cola Cup</h4>
+                    <div class="basket__desc">100% Cotton / Machine washable</div>
+                  </div>
+                  <div class="basket__delete w-embed"><svg width="18" height="18" viewbox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 1L17 17" stroke="white"></path><path d="M1 17L17 1" stroke="white"></path></svg></div>
+                </div>
+                <div class="basket__group-cost">
+                  <div class="basket__cost">$ 129.00</div>
+                  <div data-signs="listener" class="basket__signs">
+                    <div class="basket__minus"></div>
+                    <div class="basket__number-good">1</div>
+                    <div class="basket__plus"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="basket__footer--order">
+            <div class="basket__info--order">
+              <div class="basket__info-text">Subtotal</div>
+              <div class="basket__info-text">$ <span data-basket-subtotal="0" class="basket__subtotal">129.00</span></div>
+            </div>
+            <div class="basket__info--order">
+              <div class="basket__info-text">Delivery</div>
+              <div data-basket-delivery="0" class="basket__info-text">Определяется</div>
+            </div>
+            <div class="basket__cost-group">
+              <div class="basket__total-text">Total:</div>
+              <div class="basket__total">$ <span class="basket__total-in">129.00</span></div>
+            </div>
+          </div>
+        </div>
+        <div data-basket-empty="2" class="basket__empty">
+          <div class="basket__text">Ваша корзина пустая</div>
+        </div>
+      </div>
+    </div>
+    <div data-basket-empty="1" class="wrapper">
+      <section class="main main--order">
+        <h1 class="visually-hidden">Страница заказа</h1>
+        <div class="selector__theme selector__theme--order"></div>
+        <div class="order">
+          <h2 class="order__title">Заказ</h2>
+          <div class="order__text">Контактная информация</div>
+          <div class="order__form-wrap w-form">
+            <form id="order-form" name="wf-form-Order-form" data-name="Order-form" class="order__form"><input type="text" class="order__field w-input" maxlength="256" name="name" data-name="Name" placeholder="имя" data-order-field="name" id="name" data-validation="text"><input type="text" class="order__field w-input" maxlength="256" name="sec-name" data-name="sec-name" placeholder="фамилия" data-order-field="secname" id="sec-name" data-validation="text"><input type="tel" class="order__field w-input" maxlength="256" name="tel" data-name="tel" placeholder="номер телефона" data-order-field="phone" id="tel" data-validation="number"><input type="email" class="order__field w-input" maxlength="256" name="email" data-name="email" placeholder="e-mail" data-order-field="mail" id="email" data-validation="mail"><input type="text" class="order__field w-input" maxlength="256" name="Country" data-name="Country" placeholder="страна" data-order-field="country" id="country" data-validation="text"><input type="text" class="order__field w-input" maxlength="256" name="City" data-name="City" placeholder="город" data-order-field="city" id="city" data-validation="text"><input type="text" class="order__field w-input" maxlength="256" name="Address" data-name="Address" placeholder="адрес" data-order-field="address" id="address" data-validation="address"><input type="number" class="order__field w-input" maxlength="256" name="Index" data-name="Index" placeholder="индекс" data-order-field="index" id="index" data-validation="number"></form>
+            <div class="w-form-done">
+              <div>Thank you! Your submission has been received!</div>
+            </div>
+            <div class="w-form-fail">
+              <div>Oops! Something went wrong while submitting the form.</div>
+            </div>
+          </div>
+          <div class="order__info">
+            <div class="order__subtitle">Информация о доставке</div>
+            <div class="order__delivery w-embed"><svg width="140" height="20" viewbox="0 0 140 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M45.1391 7.43623C44.5273 8.27311 43.5037 9.72801 42.8807 10.5778C42.5645 11.0099 41.9933 11.7945 43.8868 11.7945C45.8902 11.7945 53.8562 11.7945 53.8562 11.7945C53.8562 11.7945 55.4629 9.58638 56.81 7.7396C58.6421 5.22733 56.9685 0 50.4181 0C44.5552 0 24.6212 0 24.6212 0L20.1483 6.13905C20.1483 6.13905 43.3364 6.13905 44.5265 6.13905C45.7572 6.13905 45.7405 6.61221 45.1391 7.43623ZM37.8152 13.3089C35.9217 13.3089 36.4928 12.5227 36.8091 12.0906C37.432 11.2408 38.4724 9.80124 39.0841 8.96435C39.6864 8.14034 39.7023 7.66718 38.47 7.66718C37.2807 7.66718 27.3208 7.66718 27.3208 7.66718L18.3376 20C18.3376 20 34.3818 20 40.2448 20C47.4803 20 51.5086 15.0286 52.7505 13.3097C52.7505 13.3089 39.8178 13.3089 37.8152 13.3089ZM52.0663 20H64.9177L69.7897 13.3081L56.9398 13.3097C56.9358 13.3089 52.0663 20 52.0663 20ZM85.2245 0L80.2952 6.7635H74.5597L79.4866 0H66.6392L58.0439 11.7945H89.4775L98.0704 0H85.2245ZM70.6532 20H83.4999L88.3743 13.3097H75.5276C75.5228 13.3089 70.6532 20 70.6532 20ZM0 15.9483V17.3694H17.8979L18.9319 15.9483H0ZM20.8557 13.3089H0V14.7284H19.8193L20.8557 13.3089ZM0 20H15.9805L17.0097 18.5869H0V20ZM121.14 17.3686H140V15.9475H122.175L121.14 17.3686ZM119.224 20H140V18.5869H120.252L119.224 20ZM124.096 13.3089L123.063 14.73H140V13.3089H124.096ZM107.269 11.7945L115.863 0H102.257C102.252 0 93.6557 11.7945 93.6557 11.7945H107.269ZM92.554 13.3089C92.554 13.3089 91.6148 14.6053 91.1584 15.2297C89.5452 17.4314 90.972 20 96.2374 20C102.32 20 116.87 20 116.87 20L121.744 13.3097H92.554V13.3089Z" fill="black"></path>
+</svg></div>
+            <p class="order__desc">Доставка из интернет-магазина осуществляется с помощью Экспресс-доставки в DHL по всему миру максимально комфортно и безопасно</p>
+          </div>
+          <div data-order-check="field" class="order__cb-group">
+            <div data-checkbox="value" class="order__checkbox">
+              <div class="order__checkbox-svg w-embed"><svg width="15" height="16" viewbox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.68058 3.26863L4.73234 8.68262L14.7274 8.77818" stroke="#666666" stroke-width="1.5"></path>
+</svg></div>
+            </div>
+            <div class="order__cb-text">Я согласен с <a href="#" class="order__link">политикой конфиденциальности</a> и <a href="#" class="order__link">условиями использования</a></div>
+          </div>
+          <a data-send-order="btn" href="#" class="order__btn w-inline-block">
+            <div class="order__btn-text">Оплатить заказ</div>
+            <div class="order__btn-wrap"> за $<span class="order__btn-cost">100</span></div>
+          </a>
+        </div>
+      </section>
+      <div class="footer footer--desc-hide">
+        <div class="footer__wrap--order">
+          <div class="footer__copyright">Copyright © 2020 Erik musin. All rights reserved.</div><a href="mailto:erik musin@gmail.com" class="footer__mail">erik musin@gmail.com</a><a href="#" class="footer__link">@erikmusin</a>
+          <div class="footer__selector">
+            <div class="footer__lang"><span data-selector="rus" class="footer__rus">rus</span> / <span data-selector="eng" class="footer__eng">eng</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="template-good visually-hidden w-embed"><template id="goods-template">
+  <div class="basket__item">
+    <img data-goods-img="" src="" alt="Товар" class="basket__image">
+    <div class="basket__main-wrap">
+      <div class="basket__title-wrap">
+      	<div class="basket__desc-wrap">
+      		<h4 class="basket__title" data-goods-title=""></h4>
+      		<div class="basket__desc" data-goods-desc=""></div>
+         </div>
+         <div data-basket-delete="" data-closest-attr="" class="basket__delete w-embed">
+          <svg data-closest-attr="" width="18" height="18" viewbox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path data-closest-attr="" d="M1 1L17 17" stroke="white"></path>
+            <path data-closest-attr="" d="M1 17L17 1" stroke="white"></path>
+          </svg>
+    		</div>
+       </div>
+      <div class="basket__group-cost">
+      	<div class="basket__cost">$ <span data-goods-cost=""></span></div>
+        <div data-signs="listener" class="basket__signs">
+          <div class="basket__minus"></div>
+          <div class="basket__number-good" data-goods-number="">1</div>
+          <div class="basket__plus"></div>
+        </div>
+      </div>
+      </div>
+  </div>
+</template></div>
+  </div>
+  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.4.1.min.220afd743d.js?site=5ed8dce972d3213ccc3372e7" type="text/javascript" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="js/webflow.js" type="text/javascript"></script>
+  <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+  <script src="https://host.choice.studio/erik/bundle.js?ver=7"></script>
+</body>
+</html>

@@ -107,6 +107,9 @@ function createObjectForStorage(btn) {// Формирование объекта
   obj.img = btn.getAttribute(`data-good-img`);
   obj.number = 1;
 
+  if (btn.getAttribute(`data-good-num`) === `one`) obj.count = null;
+  else obj.count = true;
+
   return obj;
 }
 
@@ -141,8 +144,6 @@ function renderOneGood(element) { // render one item
   // обработчик для удаления
   deleteBtnBasket.setAttribute(`data-basket-delete`, element.id);
   deleteBtnBasket.addEventListener(`click`, deleteGoodHandler);
-  counterGoods.setAttribute(`data-good-count`, `${element.id}`);
-  counterGoods.addEventListener(`click`, controlNumberHandler);
 
   workTemplate.setAttribute(`id-data`, element.id);
   workTemplate.querySelector(`[data-goods-title]`).textContent = element.title;
@@ -150,7 +151,14 @@ function renderOneGood(element) { // render one item
   workTemplate.querySelector(`[data-goods-cost]`).setAttribute(`data-goods-cost`, element.cost);
   workTemplate.querySelector(`[data-goods-cost]`).textContent = element.cost.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `);
   workTemplate.querySelector(`[data-goods-img]`).src = element.img;
-  workTemplate.querySelector(`[data-goods-number]`).textContent = element.number;
+
+  if (element.count) {
+    workTemplate.querySelector(`[data-goods-number]`).textContent = element.number;
+    counterGoods.setAttribute(`data-good-count`, `${element.id}`);
+    counterGoods.addEventListener(`click`, controlNumberHandler);
+  } else {
+    counterGoods.remove();
+  }
 
   return workTemplate;
 }
