@@ -280,6 +280,7 @@
 }
 
 .catalog__name {
+  max-width: 18rem;
   font-size: 1.5rem;
   line-height: 1.3333333333333333;
 }
@@ -2093,7 +2094,7 @@
     padding: 7rem 0.75rem 1.25rem;
   }
   .basket--order.basket-translate {
-    margin-top: 0rem;
+    margin-top: -16.1rem;
   }
   .basket__info {
     margin-bottom: 1rem;
