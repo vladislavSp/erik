@@ -14,29 +14,48 @@
   }
 }
 
+.order__cb-group[data-valid="invalid"] {
+  & .order__checkbox {
+    border-color: rgb(255, 20, 20);
+  }
+  & .order__cb-text {
+    color: rgb(255, 20, 20);
+    .order__link {
+      color: currentColor;
+    }
+  }
+}
+
 .order__cb-group[data-state="check"] {
   & .order__checkbox .order__checkbox-svg {
     display: flex;
   }
 }
 
+.order__field[data-valid="valid"] {
+  border-color: rgb(0, 0, 0);
+}
 .order__field[data-state="invalid"] {
   border-color: rgb(255, 20, 20);
 }
-.order__field[data-state="valid"] {
-  border-color: rgb(0, 0, 0);
-}
 
 .order__btn {
-  pointer-events: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #6D6D6D;
+  }
 }
 
 .order__btn[data-state="order"] {
-  pointer-events: all;
-  cursor: pointer;
   background-color: #00C74F;
 
   & .order__btn-wrap {
     display: inline;
+  }
+
+  &:hover {
+    background-color: #00ab44;
   }
 }

@@ -7,6 +7,7 @@ if (collCont) {
     slideClass: 'collection__item',
     slidesPerView: 1,
     speed: 600,
+    spaceBetween: 12,
 
     navigation: {
       nextEl: '.controls__btn[data-control-col="right"]',

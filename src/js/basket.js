@@ -4,8 +4,6 @@ let basketBtns = [...document.querySelectorAll(`*[data-basket-btn]`)],
     basket = document.querySelector(`[data-basket]`),
     basketViewOrderBtn = document.querySelector(`[data-order-basket="btn"]`),
     basketOrder = document.querySelector(`[data-basket="translate"]`),
-    // selectorTheme = document.querySelector(`.selector__theme`),
-    // container = document.querySelector(`[data-container]`),
 
     // section for Good Add/Remove
     addGoodBtn = document.querySelector(`[data-good-btn="add"]`),
@@ -22,11 +20,6 @@ if (location.pathname === `/order` && !JSON.parse(localStorage.goods).length) lo
 if (basketBtns) basketBtns.forEach(el => el.addEventListener(`click`, changeViewBasketHandler));
 if (basketViewOrderBtn) basketViewOrderBtn.addEventListener(`click`, viewOrderBasket);
 if (addGoodBtn) addGoodBtn.addEventListener(`click`, addGoodHandler);
-
-
-//blacktheme
-// if (selectorTheme) selectorTheme.addEventListener(`click`, stateTheme);
-
 
 mainStateBasket(); // defined main initial state basket
 
@@ -57,7 +50,6 @@ function stateViewBasket(state) {
 // Listeners
 function clickCloseHandler(evt) {
   let target = evt.target.closest(`div[data-basket="basket"]`);
-  // console.log(target, evt.target.hasAttribute(`data-closest-attr`));
   if (evt.target.hasAttribute(`data-closest-attr`)) return;
   else if (!target) {
     stateViewBasket(`close`);
@@ -205,15 +197,17 @@ function createTotalCost() {
 
   if (subtotalField) subtotalField.textContent = String(totalCost).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `);
 
-  if (deliveryField) {
-    let deliveryCost = deliveryField.getAttribute(`data-basket-delivery`);
-    totalCost = totalCost + Number(deliveryCost); // для будущего рендера доставки
-  }
+  if (deliveryField && deliveryField.getAttribute('data-basket-delivery')) {
+    deliveryField.textContent = `${deliveryField.getAttribute('data-basket-delivery')} ₽`;
+    totalCost = totalCost + Number(deliveryField.getAttribute('data-basket-delivery')); // для будущего рендера доставки
+  } else if (deliveryField && deliveryField.getAttribute('data-basket-delivery') === ``) deliveryField.textContent = `Определяется`;
 
   // Кнопка заказа
   if (orderBtnCost) orderBtnCost.textContent = totalCost;
 
   basketField.textContent = String(totalCost).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `); // разделение разрядов числа
+
+  return totalCost;
 }
 
 function controlNumberHandler(event) {
@@ -221,8 +215,8 @@ function controlNumberHandler(event) {
       good = this.getAttribute(`data-good-count`),
       fieldCount = this.querySelector(`.basket__number-good`);
 
-  if (target.classList.contains(`basket__minus`)) goodsCountChange(good, false, fieldCount);
-  else if (target.classList.contains(`basket__plus`)) goodsCountChange(good, true, fieldCount);
+  if (target.closest(`.basket__minus`)) goodsCountChange(good, false, fieldCount);
+  else if (target.closest(`.basket__plus`)) goodsCountChange(good, true, fieldCount);
   else return;
 }
 
@@ -247,12 +241,4 @@ function countNumber(state, field, num) {
   return num;
 }
 
-// export default createTotalCost;
-
-
-
-// function stateTheme() {
-//   this.classList.toggle(`selector__active`);
-//   document.body.classList.toggle(`container--black`);
-//   container.classList.toggle(`container--black`);
-// }
+export default createTotalCost;

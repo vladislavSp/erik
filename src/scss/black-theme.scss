@@ -89,8 +89,8 @@
     color: black;
   }
   & .basket__minus, & .basket__plus {
-    &::after, &::before {
-      background-color: #888;
+    & svg path {
+      fill: #888;
     }
   }
 

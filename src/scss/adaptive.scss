@@ -2,12 +2,13 @@
   margin-right: 0;
 }
 
+.container--info .footer__wrap {
+  padding: 0;
+}
+
 @media (min-width: 992px) {
   .shop__item:first-child {
     margin-right: 16.25rem;
-  }
-  .main-title {
-    font-size: calc(100vw - 86.8vmax); // адаптивный заголовок
   }
   .card__right {
     height: calc(100vh - 8.25rem);
@@ -25,7 +26,7 @@
 
 @media (max-width: 1800px) and (min-width: 992px) {
   .collection__desc {
-    width: 50%;
+    width: 51%;
     font-size: 3.75rem;
   }
 
@@ -77,10 +78,6 @@
   .main {
     padding-top: 5.75rem;
   }
-  .main-title {
-    font-size: calc(100vw - 87vmax);
-  }
-
   .header__wrap {
     padding-top: 1.25rem;
     padding-bottom: 2rem;
@@ -309,6 +306,19 @@
     margin-bottom: 3.25rem;
   }
 }
+
+@media (max-width: 991px) and (min-width: 768px) {
+  .container--info .footer__wrap {
+    width: 42rem;
+  }
+}
+
+@media (max-width: 767px) and (min-width: 480px) {
+  .container--info .footer__wrap {
+    width: 26.5rem;
+  }
+}
+
 
 @media (max-width: 991px) {
   .header__emb--order {

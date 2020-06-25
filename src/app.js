@@ -19,3 +19,4 @@ import './js/slider.js';
 import './js/menu.js';
 import './js/scrollToImage.js';
 import './js/form.js';
+import './js/pageScroll.js';

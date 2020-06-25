@@ -1,4 +1,8 @@
 @media (min-width: 992px) {
+  .header__basket {
+    cursor: pointer;
+  }
+
   .card__small-img {
     transition: opacity 0.2s ease;
   
@@ -17,7 +21,7 @@
     }
   }
 
-  .header__item, .header__basket, .basket__close-btn, .footer__mail, .footer__link, .card__link, .info__mail, .footer__rus, .footer__eng {
+  .header__item, .header__basket, .basket__close-btn, .footer__mail, .footer__link, .card__link, .footer__rus, .footer__eng {
     transition: color 0.2s ease;
   }
 
@@ -39,7 +43,7 @@
     }
   }
 
-  .header__basket, .info__mail {
+  .header__basket {
     &:hover {
       color: #888;
     }
@@ -75,6 +79,9 @@
     }
   }
 
+  .info__mail:hover {
+    text-decoration: underline;
+  }
 
   .card__link {
     &:hover {
@@ -91,6 +98,15 @@
       color: black;
     }
   }
+
+  .catalog__item {
+    &:hover {
+      .catalog__name {
+        text-decoration: underline;
+      }
+    }
+  }
+
   // BLACK THEME HOVER
   .container--black {
     .header__item {
@@ -134,9 +150,9 @@
       background-color: #00C74F;
     }
 
-    & .info__mail:hover {
-      color: #888;
-    }
+    // & .info__mail:hover {
+    //   color: #888;
+    // }
 
     & .footer__rus, & .footer__eng {
       &:hover {
