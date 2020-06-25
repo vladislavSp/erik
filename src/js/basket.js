@@ -77,7 +77,6 @@ function contentViewBasket(state) {
 
 
 
-
 // Sect desc add/delete goods and count,cost
 
 function countGoods() {// Счётчик товаров в корзине
@@ -230,8 +229,11 @@ function goodsCountChange(good, state, field) {
   createTotalCost();
 }
 
-function countNumber(state, field, num) {
-  if (state) num = num + 1;
+function countNumber(state, field, num) { // true - + или -
+  if (state) {
+    if (num === 3) num = 3;
+    else num = num + 1;
+  }
   else {
     if (num === 1) num = 1;
     else num = num - 1;
