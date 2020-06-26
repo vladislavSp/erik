@@ -1,44 +1,100 @@
-let cardNav = document.querySelector('[data-card]');
 
-if (cardNav && window.matchMedia("(min-width: 992px)").matches) view_progress();
-
-function view_progress() {
-
-  window.addEventListener('scroll', progress_view_scroll);
-  window.addEventListener('load', progress_view_scroll);
-
-  let headerCard = document.querySelector('[data-header="close"]');
-  let progress_view_wrap = document.querySelector('*[data-card="view"]'),
-      progress_view_obj = Object.values(progress_view_wrap.querySelectorAll('*[data-card]')),
-      progress_view_nav_wrapper = document.querySelector('*[data-card="navwrap"]'),
-      progress_view_nav = Object.values(progress_view_nav_wrapper.querySelectorAll('*[data-card]'));
-
-  let progress_view_num = '';
-
-  function progress_view_scroll() {
-    progress_view_obj.map( obj => {
-      let progress_view_top = obj.getBoundingClientRect().top,
-      progress_view_bottom = obj.getBoundingClientRect().bottom;
-      if (progress_view_top - 4 <= 0 && progress_view_bottom - 4 >= 0) {
-        if (progress_view_num != obj.getAttribute('data-card')) {
-          progress_view_num = obj.getAttribute('data-card');
-          progress_view_nav.map( obj => {
-              obj.setAttribute('state', 'disable');
-          });
-          progress_view_nav[progress_view_num - 1].setAttribute('state', 'enable');
-        }
-      }
-    });
+class ViewProgress{
+    
+  /**
+   * Variable data
+  */
+  constructor(){
+      // wrapper view
+      this.vwrap = document.querySelector('*[data-card="view"]'),
+      // card view
+      this.vcard = this.vwrap.querySelectorAll('*[data-card]'),
+      // wrapper navigation
+      this.nwrap = document.querySelector('*[data-card="navwrap"]'),
+      // card navigation
+      this.ncard = this.nwrap.querySelectorAll('*[data-card]');
   }
 
-  progress_view_nav.map(obj => {
-    obj.addEventListener('click', function(){
-      let progressViewNavSize = progress_view_wrap.querySelector(`[data-card][data-sb="${this.getAttribute('data-sa')}"]`).getBoundingClientRect().top + pageYOffset;
+  /**
+   * Init
+  */
+  init(){
+      // scroll state navigation element
+      window.addEventListener('scroll', this.scroll.bind(this));
+      // click navigation element
+      [...this.ncard].map(obj => {
+          obj.addEventListener('click', this.jump.bind(this));
+      });
+  }
 
-      gsap.to($('body,html'), 0.8,
-      {ease: Power2.easeOut, scrollTop: progressViewNavSize - headerCard.getBoundingClientRect().height});
-    })
-  })
+  /**
+   * Sroll logic
+  */
+  scroll(){
+      // calculation position
+      let elem = this.cord( this.vcard );
+      // select position
+      elem.sort(function(a, b){
+          return a.cord-b.cord;
+      });
+      // select id element
+      let result = elem[0].obj.getAttribute('data-card');
+      // state element navigation
+      this.state(result);
+  }
+
+  /**
+   * Calculation position
+  */
+  cord(data){
+      // result
+      let el = [];
+      // calculation
+      [...data].map( obj => {
+          // detected size
+          let top = obj.getBoundingClientRect().top,
+              height = obj.getBoundingClientRect().height/2,
+              screen = innerHeight/2;
+          // calculation size
+          let cord = top + height - screen;
+          // trasform size
+          cord < 0 ? cord *= -1 : ''; 
+          // push result
+          el.push({'obj': obj, 'cord': cord});
+      });
+      // return result
+      return el;
+  }
+
+  /**
+   * State navigation element
+  */
+  state(data){
+      // select element navigation    
+      let el = this.nwrap.querySelector(`*[data-card='${data}']`);
+      // disable all element
+      [...this.ncard].map(obj => {
+          obj.setAttribute('state', 'disable');
+      });
+      // enable select element
+      el.setAttribute('state', 'enable');
+      // console.log(el);
+  }
+
+  /**
+   * Scroll to element
+  */
+  jump(){
+      // num event
+      let num = event.target.getAttribute('data-sa');
+      // cord scroll element
+      let el = this.vwrap.querySelector(`*[data-sb='${num}']`);
+      // cord
+      let size = el.getBoundingClientRect().top + pageYOffset;
+      // animation scroll
+      gsap.to( $('body,html'), 0.8, {ease: Power2.easeOut, scrollTop: size} );
+  }
 }
 
-
+let viewProgress = new ViewProgress;
+viewProgress.init();
