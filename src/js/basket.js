@@ -232,14 +232,9 @@ function goodsCountChange(good, state, field, max) {
 }
 
 function countNumber(state, field, num, max) { // true - + или -
-  if (state) {
-    if (num === max) num = max;
-    else num = num + 1;
-  }
-  else {
-    if (num === 1) num = 1;
-    else num = num - 1;
-  }
+  if (state) num = num === max ? max : num + 1;
+  else num = num === 1 ? 1 : num - 1;
+
   field.textContent = num;
 
   return num;

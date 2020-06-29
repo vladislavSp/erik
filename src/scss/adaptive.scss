@@ -11,6 +11,27 @@
   height: 100%;
   align-items: center;
   justify-content: center;
+
+  & .card__text-link{
+    margin-bottom: 0;
+    padding-top: 0.156rem;
+    line-height: 1;
+    // padding-bottom: 0.156rem;
+  }
+}
+
+.card__emb, .basket__number-good {
+  margin-bottom: 0;
+}
+
+.basket__number-good {
+  padding-top: 0.15rem;
+}
+
+.desc__soldout {
+  & .card__track {
+    display: inline-block;
+  }
 }
 
 @media (min-width: 992px) {
@@ -19,6 +40,13 @@
   }
   .card__right {
     height: calc(100vh - 8.25rem);
+  }
+  .desc__soldout {
+    & .card__track {
+      font-size: 1.5rem;
+      line-height: 1.2083333333333333;
+      letter-spacing: -0.01em;
+    }
   }
 }
 
