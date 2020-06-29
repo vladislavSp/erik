@@ -1,3 +1,4 @@
+let containerCard = document.querySelector(`[data-card="navwrap"]`);
 
 class ViewProgress{
     
@@ -96,5 +97,7 @@ class ViewProgress{
   }
 }
 
-let viewProgress = new ViewProgress;
-viewProgress.init();
+if (containerCard) {
+  let viewProgress = new ViewProgress;
+  viewProgress.init();
+}

@@ -98,8 +98,8 @@ function createObjectForStorage(btn) {// Формирование объекта
   obj.img = btn.getAttribute(`data-good-img`);
   obj.number = 1;
 
-  if (btn.getAttribute(`data-good-num`) === `one`) obj.count = null;
-  else obj.count = true;
+  if (Number(btn.getAttribute(`data-good-num`)) > 1) obj.count = Number(btn.getAttribute(`data-good-num`));
+  else obj.count = false;
 
   return obj;
 }
@@ -146,6 +146,7 @@ function renderOneGood(element) { // render one item
   if (element.count) {
     workTemplate.querySelector(`[data-goods-number]`).textContent = element.number;
     counterGoods.setAttribute(`data-good-count`, `${element.id}`);
+    counterGoods.setAttribute(`data-max-count`, element.count);
     counterGoods.addEventListener(`click`, controlNumberHandler);
   } else {
     counterGoods.remove();
@@ -212,26 +213,27 @@ function createTotalCost() {
 function controlNumberHandler(event) {
   let target = event.target,
       good = this.getAttribute(`data-good-count`),
+      maxCount = Number(this.getAttribute(`data-max-count`)),
       fieldCount = this.querySelector(`.basket__number-good`);
 
   if (target.closest(`.basket__minus`)) goodsCountChange(good, false, fieldCount);
-  else if (target.closest(`.basket__plus`)) goodsCountChange(good, true, fieldCount);
+  else if (target.closest(`.basket__plus`)) goodsCountChange(good, true, fieldCount, maxCount);
   else return;
 }
 
-function goodsCountChange(good, state, field) {
+function goodsCountChange(good, state, field, max) {
   goodsArray = JSON.parse(localStorage.goods);
   let searchGood = goodsArray.find(el => el.id === good);
   
-  searchGood.number = countNumber(state, field, searchGood.number);
+  searchGood.number = countNumber(state, field, searchGood.number, max);
 
   localStorage.setItem("goods", JSON.stringify(goodsArray));
   createTotalCost();
 }
 
-function countNumber(state, field, num) { // true - + или -
+function countNumber(state, field, num, max) { // true - + или -
   if (state) {
-    if (num === 3) num = 3;
+    if (num === max) num = max;
     else num = num + 1;
   }
   else {

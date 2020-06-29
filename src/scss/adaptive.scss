@@ -6,6 +6,13 @@
   padding: 0;
 }
 
+.card__wrap-text {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (min-width: 992px) {
   .shop__item:first-child {
     margin-right: 16.25rem;
