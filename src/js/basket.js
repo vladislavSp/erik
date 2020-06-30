@@ -98,8 +98,8 @@ function createObjectForStorage(btn) {// Формирование объекта
   obj.img = btn.getAttribute(`data-good-img`);
   obj.number = 1;
 
-  if (Number(btn.getAttribute(`data-good-num`)) > 1) obj.count = Number(btn.getAttribute(`data-good-num`));
-  else obj.count = false;
+  if (Number(btn.getAttribute(`data-good-num`)) > 1) obj.maxcount = Number(btn.getAttribute(`data-good-num`));
+  else obj.maxcount = false;
 
   return obj;
 }
@@ -143,10 +143,10 @@ function renderOneGood(element) { // render one item
   workTemplate.querySelector(`[data-goods-cost]`).textContent = element.cost.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `);
   workTemplate.querySelector(`[data-goods-img]`).src = element.img;
 
-  if (element.count) {
+  if (element.maxcount) {
     workTemplate.querySelector(`[data-goods-number]`).textContent = element.number;
     counterGoods.setAttribute(`data-good-count`, `${element.id}`);
-    counterGoods.setAttribute(`data-max-count`, element.count);
+    counterGoods.setAttribute(`data-max-count`, element.maxcount);
     counterGoods.addEventListener(`click`, controlNumberHandler);
   } else {
     counterGoods.remove();
@@ -239,5 +239,40 @@ function countNumber(state, field, num, max) { // true - + или -
 
   return num;
 }
+
+
+
+// NEW FUNC - update Basket from server
+
+function updateStoreFromServer() {
+  axios({
+    method: 'get',
+    url: `${location.origin}/goods`,
+    data: ``,
+  }).then(function (response) {
+    let obj = response.data.replace("},]", "}]");
+    localStorage.setItem('storeGoods', obj);
+  }).then(() => {
+    comparisonStore();
+  });
+}
+
+function comparisonStore() {
+  let storeGoods = JSON.parse(localStorage.storeGoods); // эталонный товар с сервера 
+  let goods = JSON.parse(localStorage.goods); //
+
+  goods.forEach(el => {
+    storeGoods.forEach(newEl => {
+      if (el.id === newEl.id) {
+        console.log(el.maxcount, Number(newEl.num));
+
+        if (el.maxcount > Number(newEl.num)) console.log('Нужно перерендерить');
+        else if (el.maxcount <= Number(newEl.num)) console.log('Ничего не нужно делать');
+      }
+    })
+  });
+}
+
+updateStoreFromServer();
 
 export default createTotalCost;
