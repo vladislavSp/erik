@@ -21,8 +21,6 @@ if (basketBtns) basketBtns.forEach(el => el.addEventListener(`click`, changeView
 if (basketViewOrderBtn) basketViewOrderBtn.addEventListener(`click`, viewOrderBasket);
 if (addGoodBtn) addGoodBtn.addEventListener(`click`, addGoodHandler);
 
-mainStateBasket(); // defined main initial state basket
-
 function mainStateBasket() {
   if (JSON.parse(localStorage.goods).length) {
     contentViewBasket(true);
@@ -143,7 +141,7 @@ function renderOneGood(element) { // render one item
   workTemplate.querySelector(`[data-goods-cost]`).textContent = element.cost.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `);
   workTemplate.querySelector(`[data-goods-img]`).src = element.img;
 
-  if (element.maxcount) {
+  if (element.maxcount > 1) {
     workTemplate.querySelector(`[data-goods-number]`).textContent = element.number;
     counterGoods.setAttribute(`data-good-count`, `${element.id}`);
     counterGoods.setAttribute(`data-max-count`, element.maxcount);
@@ -221,7 +219,7 @@ function controlNumberHandler(event) {
   else return;
 }
 
-function goodsCountChange(good, state, field, max) {
+function goodsCountChange(good, state, field, max) { // max
   goodsArray = JSON.parse(localStorage.goods);
   let searchGood = goodsArray.find(el => el.id === good);
   
@@ -231,9 +229,12 @@ function goodsCountChange(good, state, field, max) {
   createTotalCost();
 }
 
-function countNumber(state, field, num, max) { // true - + или -
-  if (state) num = num === max ? max : num + 1;
-  else num = num === 1 ? 1 : num - 1;
+function countNumber(state, field, num, max) { // max
+  if (state) { // кол-во товара подвязанное на количество в админке
+    if (max < 3) num = max;
+    else if (num === 3) num = 3;
+    else num = num + 1; // num 
+  } else num = num === 1 ? 1 : num - 1;
 
   field.textContent = num;
 
@@ -252,25 +253,39 @@ function updateStoreFromServer() {
   }).then(function (response) {
     let obj = response.data.replace("},]", "}]");
     localStorage.setItem('storeGoods', obj);
-  }).then(() => {
+  })
+  .then(() => {
     updataStore();
+  })
+  .then(() => {
+    mainStateBasket(); // defined main initial state basket
   });
 }
 
+const MAX_COUNT_GOOD = 3;
+
 function updataStore() {
   let storeGoods = JSON.parse(localStorage.storeGoods); // товар с сервера 
-  let goods = JSON.parse(localStorage.goods); // товар на странице
+  goodsArray = JSON.parse(localStorage.goods); // товар на странице
 
-  goods.forEach(el => {
-    storeGoods.forEach(newEl => {
-      if (el.id === newEl.id) {
-        console.log(`Количество на странице: ${el.maxcount}`, `Количество с сервера: ${Number(newEl.num)}`);
+  if (goodsArray) {
 
-        if (el.maxcount > Number(newEl.num)) console.log('Нужно перерендерить');
-        else if (el.maxcount <= Number(newEl.num)) console.log('Ничего не нужно делать');
-      }
-    })
-  });
+    goodsArray.forEach((el, i) => {
+      storeGoods.forEach(newEl => {
+        if (el.id === newEl.id) {
+          if (Number(newEl.num) > 0 && Number(newEl.num) < 3) { // Синхронизация с сервера количества товаров для корзины
+            goodsArray[i].maxcount = Number(newEl.num);
+            goodsArray[i].number = Number(newEl.num);
+          }
+          else if (Number(newEl.num) > 3) goodsArray[i].maxcount = MAX_COUNT_GOOD;
+          else if (Number(newEl.num) === 0) goodsArray.splice(i, 1);
+        }
+      })
+    });
+  
+    localStorage.setItem(`goods`, JSON.stringify(goodsArray));
+  }
+  
 }
 
 updateStoreFromServer();
