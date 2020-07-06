@@ -253,18 +253,18 @@ function updateStoreFromServer() {
     let obj = response.data.replace("},]", "}]");
     localStorage.setItem('storeGoods', obj);
   }).then(() => {
-    comparisonStore();
+    updataStore();
   });
 }
 
-function comparisonStore() {
-  let storeGoods = JSON.parse(localStorage.storeGoods); // эталонный товар с сервера 
-  let goods = JSON.parse(localStorage.goods); //
+function updataStore() {
+  let storeGoods = JSON.parse(localStorage.storeGoods); // товар с сервера 
+  let goods = JSON.parse(localStorage.goods); // товар на странице
 
   goods.forEach(el => {
     storeGoods.forEach(newEl => {
       if (el.id === newEl.id) {
-        console.log(el.maxcount, Number(newEl.num));
+        console.log(`Количество на странице: ${el.maxcount}`, `Количество с сервера: ${Number(newEl.num)}`);
 
         if (el.maxcount > Number(newEl.num)) console.log('Нужно перерендерить');
         else if (el.maxcount <= Number(newEl.num)) console.log('Ничего не нужно делать');
