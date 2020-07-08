@@ -31,7 +31,7 @@ class SaveField{
      * Event keydown
      * and save info in locastorage
     */
-    ev(){
+    ev() {
         // number element
         let num = event.target.getAttribute('data-num-save');
         // select data
@@ -47,16 +47,18 @@ class SaveField{
     /**
      * Event keydown
     */
-    add(){
+    add() {
         // select data in localstorage
         let data = localStorage.getItem('form');
         // json parse
         data = JSON.parse(data);
         // insert data in input
-        data.map( (obj, index) => {
-            this.field[index].value = obj;
-            this.data[index] = obj;
-        });
+        if (data) {
+            data.map( (obj, index) => {
+                this.field[index].value = obj;
+                this.data[index] = obj;
+            });
+        }
     }
 }
 

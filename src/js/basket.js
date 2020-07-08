@@ -251,8 +251,10 @@ function updateStoreFromServer() {
     url: `${location.origin}/goods`,
     data: ``,
   }).then(function (response) {
-    let obj = response.data.replace("},]", "}]");
-    localStorage.setItem('storeGoods', obj);
+    if (response.data.length) {
+      let obj = response.data.replace("},]", "}]");
+      localStorage.setItem('storeGoods', obj);
+    }
   })
   .then(() => {
     updataStore();

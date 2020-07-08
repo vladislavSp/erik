@@ -1,4 +1,5 @@
 let btnsScroll = [...document.querySelectorAll(`*[data-link="scroll"]`)],
+    headerBlock = document.querySelector(`[data-header]`),
     blocksForSroll = [...document.querySelectorAll(`[data-content]`)];
 
 if (btnsScroll.length && blocksForSroll.length) {
@@ -14,7 +15,7 @@ function scrollToContent(evt) {
       if (el.getAttribute(`data-content`) === attr) {
         gsap.to($("body,html"), 0.8, {
           ease: Power2.easeOut,
-          scrollTop: el.getBoundingClientRect().top + pageYOffset
+          scrollTop: el.getBoundingClientRect().top + pageYOffset - headerBlock.getBoundingClientRect().height
         });
       }
     });
