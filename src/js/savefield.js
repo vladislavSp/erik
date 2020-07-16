@@ -37,7 +37,7 @@ class SaveField{
         // select data
         if(event.target.value == ''){
             this.data[num] = null;
-        }else{
+        } else {
             this.data[num] = event.target.value;
         }
         // add localstorage

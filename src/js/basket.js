@@ -198,7 +198,7 @@ function createTotalCost() {
   if (deliveryField && deliveryField.getAttribute('data-basket-delivery')) {
     deliveryField.textContent = `${deliveryField.getAttribute('data-basket-delivery')} ₽`;
     totalCost = totalCost + Number(deliveryField.getAttribute('data-basket-delivery')); // для будущего рендера доставки
-  } else if (deliveryField && deliveryField.getAttribute('data-basket-delivery') === ``) deliveryField.textContent = `Определяется`;
+  } else if (deliveryField && deliveryField.getAttribute('data-basket-delivery') === ``) deliveryField.textContent = `Введите индекс`;
 
   // Кнопка заказа
   if (orderBtnCost) orderBtnCost.textContent = totalCost;

@@ -2,6 +2,7 @@ import createTotalCost from './basket.js';
 
 let checkboxWrap = document.querySelector(`[data-order-check]`),
     inputFields = [...document.querySelectorAll(`*[data-order-field]`)],
+    inputIndexField = document.querySelector('[data-order-field="index"]'),
     deliveryCost = document.querySelector(`[data-basket-delivery]`),
     orderBtn = document.querySelector(`[data-send-order]`);
 
@@ -32,12 +33,13 @@ function checkBtnState() { // проверка заполненности фор
 
 // VALIDATION
 function validationHandler(elem) {
-  let value = elem.dataset.validation;
+  let value = elem.dataset.validation; // get data-validation
 
   if (value === `text`) elem.addEventListener(`input`, textFieldValidation);
   else if (value === `number`) elem.addEventListener(`input`, numberValidation);
   else if (value === `mail`) elem.addEventListener(`input`, mailValidation);
   else if (value === `address`) elem.addEventListener(`input`, addressValidation);
+  else if (value === `index`) elem.addEventListener(`input`, indexValidation);
 }
 
 function textFieldValidation(event) {
@@ -81,18 +83,61 @@ function addressValidation(event) { // ввод в форму значений �
   let el = event.target ? event.target : event;
 
   if (el.value.length > 0) { // Пересмотреть условие, чтобы добавить проверку адреса и определение цены
-    // ЗАПИСЬ В МОМЕНТ ПОЛУЧЕНИЯ ДАННЫХ
     el.dataset.valid = `valid`;
-    deliveryCost.setAttribute(`data-basket-delivery`, 850); 
-    createTotalCost(850);
-  }
-  else if (el.value.length === 0) {
+  } else if (el.value.length === 0) {
     el.dataset.valid = ``;
-    deliveryCost.setAttribute(`data-basket-delivery`, ``);
-    createTotalCost();
+
   }
 }
 
+indexValidation(inputIndexField);
+
+function indexValidation(event) {
+  let el = event.target ? event.target : event;
+
+  console.log(el.value);
+
+  if (el.value.length > 0) {
+    let sendObj = {}, sendJson, data = {};
+    data.goods = [];
+
+    sendObj.goods = JSON.parse(localStorage.goods);
+    
+    sendObj.goods.forEach(el => {
+      data.goods.push({id: el.id, num: el.number});
+    });
+
+    data.indexx = el.value;
+    sendJson = JSON.stringify(data);
+    deliveryCost.textContent = `Определяется`;
+
+    axios({
+      method: 'post',
+      url: `back/state.php`,
+      data: `api=price&data=${sendJson}`,
+    }).then(function (response) {
+      if (response.data.delivery === `error`) { // Ошибка ввода - нужно ввести корректный индекс
+        el.dataset.state = `invalid`;
+        el.dataset.valid = ``;
+        deliveryCost.setAttribute(`data-basket-delivery`, ``);
+        createTotalCost();
+        deliveryCost.textContent = `Введите корректный индекс`;
+      } else {
+        el.dataset.state = ``;
+        el.dataset.valid = `valid`;
+        let price = response.data.delivery.price;
+        // console.log(response.data, price);
+        deliveryCost.setAttribute(`data-basket-delivery`, price); 
+        createTotalCost(price);
+      }
+    });
+  } else {
+    el.dataset.valid = ``;
+    el.dataset.state = ``;
+    // deliveryCost.setAttribute(`data-basket-delivery`, ``);
+    // createTotalCost();
+  }
+}
 
 
 // CHECKBOX VALID
@@ -103,11 +148,12 @@ function checkboxClickHandler() {
 }
 
 function checkValidation() {
-  inputFields.forEach((el, i, arr) => {
+  inputFields.forEach(el => {
     if (el.getAttribute('data-validation') === `text`) textFieldValidation(el); // ДОБАВИТЬ ПРОВЕРКУ ДЛЯ ПОЛЕЙ 
     else if (el.getAttribute('data-validation') === `number`) numberValidation(el);
     else if (el.getAttribute('data-validation') === `mail`) mailValidation(el);
     else if (el.getAttribute('data-validation') === `address`) addressValidation(el);
+    else if (el.getAttribute('data-validation') === `index`) indexValidation(el);
 
     if (el.dataset.valid !== `valid`) el.setAttribute(`data-state`, `invalid`);
   });
@@ -153,16 +199,3 @@ function sendingForm() {
     location.href = response.data.link;
   });
 }
-
-
-
-// ymaps.ready(init);
-// function init() {
-//   ymaps.geocode(`Поле поиска`, {
-
-//   }).then((res) => {
-//     var firstGeoObject = res.geoObjects.get(0);
-//     console.log(firstGeoObject);
-//     console.log(`Все данные объекта: `, firstGeoObject.properties.getAll());
-//   });
-// }
