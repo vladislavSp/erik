@@ -20,7 +20,7 @@ class SaveField{
     /**
      * Add event
     */
-    event(){
+    event() {
         this.field.map( (obj, index) => {
             obj.setAttribute('data-num-save', index);
             obj.addEventListener('keyup', this.ev.bind(this));

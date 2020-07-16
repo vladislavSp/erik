@@ -12,15 +12,16 @@ if (inputFields.length) {
     el.addEventListener(`focus`, resetValidation);
   });
 }
+
 if (checkboxWrap) checkboxWrap.addEventListener(`click`, checkboxClickHandler);
 
 if (orderBtn) orderBtn.addEventListener(`click`, checkValidation);
 
-function resetValidation() {
+function resetValidation() { // сброс ошибок инпутов
   this.dataset.state = ``;
 }
 
-function checkBtnState() {
+function checkBtnState() { // проверка заполненности формы
   let fieldComplete = inputFields.every(el => el.dataset.valid === `valid`);
   let checkboxCheck = checkboxWrap.dataset.state === `check`;
 
@@ -39,8 +40,9 @@ function validationHandler(elem) {
   else if (value === `address`) elem.addEventListener(`input`, addressValidation);
 }
 
-function textFieldValidation() {
-  let value = this.value, numbers = [], initArr = [];
+function textFieldValidation(event) {
+  let el = event.target ? event.target : event ;
+  let value = el.value, numbers = [], initArr = [];
 
   numbers.push(value.replace(/[^\d]/g,'')); // находим значения цифр в инпуте
   initArr = value.split(''); // разделяем ввод на массив (",");
@@ -49,36 +51,43 @@ function textFieldValidation() {
 
   if (num >= 0) {
     initArr.splice(num, 1); // удаление этого ввода
-    this.value = initArr.join(''); // подстановка значения без цифр
+    el.value = initArr.join(''); // подстановка значения без цифр
   }
 
-  if (this.value === ` `) this.value = this.value.trim(); //удаление первого пробела
+  if (el.value === ` `) el.value = this.value.trim(); //удаление первого пробела
 
-  if (this.value.length > 0) this.dataset.valid = `valid`;
-  else if (this.value === ``) this.dataset.valid = ``;
+  if (el.value.length > 0) el.dataset.valid = `valid`;
+  else if (el.value === ``) el.dataset.valid = ``;
 }
 
-function numberValidation() {
-  this.value = this.value.replace(/[^\d.]/g, '');
-  if (this.value !== ``) this.dataset.valid = `valid`;
-  else this.dataset.valid = ``;
+function numberValidation(event) {
+  let el = event.target ? event.target : event; // выбор эвента для
+
+  el.value = el.value.replace(/[^\d.]/g, '');
+  if (el.value !== ``) el.dataset.valid = `valid`;
+  else el.dataset.valid = ``;
 }
 
-function mailValidation () {
+function mailValidation (event) {
+  let el = event.target ? event.target : event;
   let mailExp = /\S+@\S+\.\S+/;
-  if (this.value.match(mailExp)) this.dataset.valid = `valid`;
-  else if (this.value === ``) this.dataset.valid = ``;
-  else this.dataset.valid = `invalid`;
+
+  if (el.value.match(mailExp)) el.dataset.valid = `valid`;
+  else if (el.value === ``) el.dataset.valid = ``;
+  else el.dataset.valid = `invalid`;
 }
 
-function addressValidation() {
-  if (this.value.length > 0) {
-    this.dataset.valid = `valid`;
-    deliveryCost.setAttribute(`data-basket-delivery`, 850);
+function addressValidation(event) { // ввод в форму значений и получение цены
+  let el = event.target ? event.target : event;
+
+  if (el.value.length > 0) { // Пересмотреть условие, чтобы добавить проверку адреса и определение цены
+    // ЗАПИСЬ В МОМЕНТ ПОЛУЧЕНИЯ ДАННЫХ
+    el.dataset.valid = `valid`;
+    deliveryCost.setAttribute(`data-basket-delivery`, 850); 
     createTotalCost(850);
   }
-  else if (this.value.length === 0) {
-    this.dataset.valid = ``;
+  else if (el.value.length === 0) {
+    el.dataset.valid = ``;
     deliveryCost.setAttribute(`data-basket-delivery`, ``);
     createTotalCost();
   }
@@ -86,7 +95,7 @@ function addressValidation() {
 
 
 
-// CHECKBOX
+// CHECKBOX VALID
 function checkboxClickHandler() {
   this.dataset.state = this.dataset.state === `check` ? `` : `check`;
   this.dataset.valid = this.dataset.state === `check` ? `valid` : ``;
@@ -94,9 +103,15 @@ function checkboxClickHandler() {
 }
 
 function checkValidation() {
-  inputFields.forEach(el => {
+  inputFields.forEach((el, i, arr) => {
+    if (el.getAttribute('data-validation') === `text`) textFieldValidation(el); // ДОБАВИТЬ ПРОВЕРКУ ДЛЯ ПОЛЕЙ 
+    else if (el.getAttribute('data-validation') === `number`) numberValidation(el);
+    else if (el.getAttribute('data-validation') === `mail`) mailValidation(el);
+    else if (el.getAttribute('data-validation') === `address`) addressValidation(el);
+
     if (el.dataset.valid !== `valid`) el.setAttribute(`data-state`, `invalid`);
   });
+  
 
   let fieldComplete = inputFields.every(el => el.dataset.valid === `valid`);
   let checkboxCheck = checkboxWrap.dataset.state === `check`;
