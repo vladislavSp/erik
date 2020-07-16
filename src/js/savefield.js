@@ -21,10 +21,12 @@ class SaveField{
      * Add event
     */
     event() {
-        this.field.map( (obj, index) => {
-            obj.setAttribute('data-num-save', index);
-            obj.addEventListener('keyup', this.ev.bind(this));
-        });
+        if (this.field.length) {
+            this.field.map( (obj, index) => {
+                obj.setAttribute('data-num-save', index);
+                obj.addEventListener('keyup', this.ev.bind(this));
+            });
+        }
     }
 
     /**
@@ -55,8 +57,11 @@ class SaveField{
         // insert data in input
         if (data) {
             data.map( (obj, index) => {
-                this.field[index].value = obj;
-                this.data[index] = obj;
+                if (this.field.length) {
+                    this.field[index].value = obj;
+                    this.field[index].setAttribute('value', obj);
+                    this.data[index] = obj;
+                } 
             });
         }
     }

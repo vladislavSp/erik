@@ -45,7 +45,7 @@ function validationHandler(elem) {
 function textFieldValidation(event) {
   let el = event.target ? event.target : event ;
   let value = el.value, numbers = [], initArr = [];
-
+  el.setAttribute('value', el.value);
   numbers.push(value.replace(/[^\d]/g,'')); // находим значения цифр в инпуте
   initArr = value.split(''); // разделяем ввод на массив (",");
 
@@ -64,8 +64,8 @@ function textFieldValidation(event) {
 
 function numberValidation(event) {
   let el = event.target ? event.target : event; // выбор эвента для
-
   el.value = el.value.replace(/[^\d.]/g, '');
+  el.setAttribute('value', el.value);
   if (el.value !== ``) el.dataset.valid = `valid`;
   else el.dataset.valid = ``;
 }
@@ -73,6 +73,7 @@ function numberValidation(event) {
 function mailValidation (event) {
   let el = event.target ? event.target : event;
   let mailExp = /\S+@\S+\.\S+/;
+  el.setAttribute('value', el.value);
 
   if (el.value.match(mailExp)) el.dataset.valid = `valid`;
   else if (el.value === ``) el.dataset.valid = ``;
@@ -81,6 +82,7 @@ function mailValidation (event) {
 
 function addressValidation(event) { // ввод в форму значений и получение цены
   let el = event.target ? event.target : event;
+  el.setAttribute('value', el.value);
 
   if (el.value.length > 0) { // Пересмотреть условие, чтобы добавить проверку адреса и определение цены
     el.dataset.valid = `valid`;
@@ -90,52 +92,55 @@ function addressValidation(event) { // ввод в форму значений �
   }
 }
 
-indexValidation(inputIndexField);
+if (inputIndexField && inputIndexField.getAttribute('value')) indexValidation(inputIndexField); // если поле ввода
 
 function indexValidation(event) {
   let el = event.target ? event.target : event;
-
-  console.log(el.value);
+  el.setAttribute('value', el.value);
 
   if (el.value.length > 0) {
-    let sendObj = {}, sendJson, data = {};
-    data.goods = [];
-
-    sendObj.goods = JSON.parse(localStorage.goods);
     
-    sendObj.goods.forEach(el => {
-      data.goods.push({id: el.id, num: el.number});
-    });
+    sendRequest(el);
+    
+    // let sendObj = {}, sendJson, data = {};
+    // data.goods = [];
 
-    data.indexx = el.value;
-    sendJson = JSON.stringify(data);
-    deliveryCost.textContent = `Определяется`;
+    // sendObj.goods = JSON.parse(localStorage.goods);
+    
+    // sendObj.goods.forEach(el => {
+    //   data.goods.push({id: el.id, num: el.number});
+    // });
 
-    axios({
-      method: 'post',
-      url: `back/state.php`,
-      data: `api=price&data=${sendJson}`,
-    }).then(function (response) {
-      if (response.data.delivery === `error`) { // Ошибка ввода - нужно ввести корректный индекс
-        el.dataset.state = `invalid`;
-        el.dataset.valid = ``;
-        deliveryCost.setAttribute(`data-basket-delivery`, ``);
-        createTotalCost();
-        deliveryCost.textContent = `Введите корректный индекс`;
-      } else {
-        el.dataset.state = ``;
-        el.dataset.valid = `valid`;
-        let price = response.data.delivery.price;
-        // console.log(response.data, price);
-        deliveryCost.setAttribute(`data-basket-delivery`, price); 
-        createTotalCost(price);
-      }
-    });
+    // data.indexx = el.value;
+    // sendJson = JSON.stringify(data);
+
+    // axios({
+    //   method: 'post',
+    //   url: `back/state.php`,
+    //   data: `api=price&data=${sendJson}`,
+    // }).then(function (response) {
+    //   if (response.data.delivery === `error`) { // Ошибка ввода - нужно ввести корректный индекс
+    //     el.dataset.state = `invalid`;
+    //     el.dataset.valid = ``;
+
+    //     deliveryCost.setAttribute(`data-basket-delivery`, ``);
+    //     createTotalCost();
+    //     deliveryCost.textContent = `Введите корректный индекс`;
+    //   } else {
+    //     el.dataset.state = ``;
+    //     el.dataset.valid = `valid`;
+
+    //     let price = response.data.delivery.price;
+
+    //     deliveryCost.setAttribute(`data-basket-delivery`, price); 
+    //     createTotalCost(price);
+    //   }
+    // });
   } else {
     el.dataset.valid = ``;
     el.dataset.state = ``;
-    // deliveryCost.setAttribute(`data-basket-delivery`, ``);
-    // createTotalCost();
+    deliveryCost.setAttribute(`data-basket-delivery`, ``);
+    createTotalCost();
   }
 }
 
@@ -199,3 +204,46 @@ function sendingForm() {
     location.href = response.data.link;
   });
 }
+
+
+
+function sendRequest(element) {
+  let sendObj = {}, sendJson, data = {};
+  data.goods = [];
+
+  sendObj.goods = JSON.parse(localStorage.goods);
+  
+  sendObj.goods.forEach(el => {
+    data.goods.push({id: el.id, num: el.number});
+  });
+
+  data.indexx = element.value;
+  sendJson = JSON.stringify(data);
+
+  deliveryCost.textContent = `Определяется`;
+
+  axios({
+    method: 'post',
+    url: `back/state.php`,
+    data: `api=price&data=${sendJson}`,
+  }).then(function (response) {
+    if (response.data.delivery === `error`) { // Ошибка ввода - нужно ввести корректный индекс
+      element.dataset.state = `invalid`;
+      element.dataset.valid = ``;
+
+      deliveryCost.setAttribute(`data-basket-delivery`, ``);
+      createTotalCost();
+      deliveryCost.textContent = `Введите корректный индекс`;
+    } else {
+      element.dataset.state = ``;
+      element.dataset.valid = `valid`;
+
+      let price = response.data.delivery.price;
+
+      deliveryCost.setAttribute(`data-basket-delivery`, price); 
+      createTotalCost(price);
+    }
+  });
+}
+
+export default sendRequest;

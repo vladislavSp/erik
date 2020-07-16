@@ -1,4 +1,4 @@
-// import ScrollControl from './scrollControl.js';
+import sendRequest from './form.js';
 
 let basketBtns = [...document.querySelectorAll(`*[data-basket-btn]`)],
     basket = document.querySelector(`[data-basket]`),
@@ -11,7 +11,9 @@ let basketBtns = [...document.querySelectorAll(`*[data-basket-btn]`)],
     basketFullView = document.querySelector(`[data-basket-full]`),
     basketEmptyView = document.querySelector(`[data-basket-empty]`),
     basketContainer = document.querySelector(`[data-basket-list]`),
-    goodsArray = [];
+    goodsArray = [],
+    
+    indexInput = document.querySelector('[data-order-field="index"]');
 
 const ESC_CODE = 27;
 
@@ -26,6 +28,7 @@ function mainStateBasket() {
     contentViewBasket(true);
     renderGoodsList(localStorage.goods);
     createTotalCost();
+    if (location.pathname === `/order`) sendRequest(indexInput); // 16/07/2020 - ДОБАВЛЕНИЕ РАСЧЁТА ЦЕНЫ С УЧЁТОМ ДОСТАВКИ
   } else {
     contentViewBasket(false);
   }
@@ -166,9 +169,12 @@ function deleteGoodHandler() {
   // Если все товары удалены
   if (!JSON.parse(localStorage.goods).length) {
     contentViewBasket(false);
-    if(location.pathname === `/order`) location.href = `/`; // redirmain
+    if (location.pathname === `/order`) location.href = `/`; // redirmain
   }
-  else createTotalCost();
+  else {
+    if (location.pathname === `/order`) sendRequest(indexInput); // 16/07/2020 - ДОБАВЛЕНИЕ РАСЧЁТА ЦЕНЫ С УЧЁТОМ ДОСТАВКИ
+    else createTotalCost();
+  }
 }
 
 function deleteFromStorage(param) {
@@ -226,7 +232,9 @@ function goodsCountChange(good, state, field, max) { // max
   searchGood.number = countNumber(state, field, searchGood.number, max);
 
   localStorage.setItem("goods", JSON.stringify(goodsArray));
-  createTotalCost();
+
+  if (location.pathname === `/order`) sendRequest(indexInput); // 16/07/2020 - ДОБАВЛЕНИЕ РАСЧЁТА ЦЕНЫ С УЧЁТОМ ДОСТАВКИ
+  else createTotalCost();
 }
 
 function countNumber(state, field, num, max) { // max

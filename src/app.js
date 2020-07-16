@@ -18,6 +18,6 @@ import './js/basket.js';
 import './js/slider.js';
 import './js/menu.js';
 import './js/scrollToImage.js';
+import './js/savefield.js';
 import './js/form.js';
 import './js/pageScroll.js';
-import './js/savefield.js';
