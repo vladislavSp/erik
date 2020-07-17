@@ -9,7 +9,7 @@ if (btnsScroll.length && blocksForSroll.length) {
 function scrollToContent(evt) {
   let attr = this.getAttribute('href').split(`#`)[1];
   if (attr) {
-    evt.preventDefault();
+    if (location.pathname === '/') evt.preventDefault();
 
     blocksForSroll.forEach(el => {
       if (el.getAttribute(`data-content`) === attr) {

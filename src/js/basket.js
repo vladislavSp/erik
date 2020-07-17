@@ -169,7 +169,7 @@ function deleteGoodHandler() {
   // Если все товары удалены
   if (!JSON.parse(localStorage.goods).length) {
     contentViewBasket(false);
-    if (location.pathname === `/order`) location.href = `/`; // redirmain
+    if (location.pathname === `/order`) location.href = `/`; // redirect на главную при пустой корзине на странице заказа
   }
   else {
     if (location.pathname === `/order`) sendRequest(indexInput); // 16/07/2020 - ДОБАВЛЕНИЕ РАСЧЁТА ЦЕНЫ С УЧЁТОМ ДОСТАВКИ

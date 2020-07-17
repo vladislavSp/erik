@@ -200,7 +200,9 @@ function sendingForm() {
     method: 'post',
     url: `back/state.php`,
     data: `api=add&data=${sendJson}`,
-  }).then(function (response) {
+  }).then(() => {
+    localStorage.goods = JSON.stringify([]); // Очищение корзины после покупки
+  }).then((response) => {
     location.href = response.data.link;
   });
 }
