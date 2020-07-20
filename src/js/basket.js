@@ -6,7 +6,7 @@ let basketBtns = [...document.querySelectorAll(`*[data-basket-btn]`)],
     basketOrder = document.querySelector(`[data-basket="translate"]`),
 
     // section for Good Add/Remove
-    addGoodBtn = document.querySelector(`[data-good-btn="add"]`),
+    addGoodBtn = document.querySelector(`[data-goods-btn="add"]`), // data-good-btn
     basketCounters = [...document.querySelectorAll(`*[data-basket-counter]`)],
     basketFullView = document.querySelector(`[data-basket-full]`),
     basketEmptyView = document.querySelector(`[data-basket-empty]`),
@@ -43,6 +43,8 @@ function changeViewBasketHandler(evt) {
 }
 
 function stateViewBasket(state) {
+  console.log(state);
+
   basket.setAttribute(`data-state`, `${state === `open` ? `open` : `close`}`);
   document[state === `open` ? `addEventListener` : `removeEventListener`](`click`, clickCloseHandler);
   document[state ===`open` ? `addEventListener` : `removeEventListener`](`keydown`, buttonCloseHandler);
@@ -85,21 +87,26 @@ function countGoods() {// Счётчик товаров в корзине
 }
 
 function addGoodHandler(evt) { // обр-к кнопки добавления товара
-  evt.preventDefault();
+  // evt.preventDefault();
   addToStorage(createObjectForStorage(this));
   stateViewBasket(`open`);
 }
 
 function createObjectForStorage(btn) {// Формирование объекта для Storage
   let obj = {};
-  obj.id = btn.getAttribute(`data-good-id`);
-  obj.title = btn.getAttribute(`data-good-title`);
-  obj.cost = btn.getAttribute(`data-good-cost`);
-  obj.desc = btn.getAttribute(`data-good-desc`);
-  obj.img = btn.getAttribute(`data-good-img`);
+  obj.id = btn.getAttribute(`data-goods-id`);
+  obj.title = btn.getAttribute(`data-goods-title`);
+  obj.titleLng = btn.getAttribute(`data-goods-title-lng`);
+
+  obj.cost = btn.getAttribute(`data-goods-cost`);
+
+  obj.desc = btn.getAttribute(`data-goods-desc`); //data-good-desc
+  obj.descLng = btn.getAttribute(`data-goods-desc-lng`);
+
+  obj.img = btn.getAttribute(`data-goods-img`); //data-good-img
   obj.number = 1;
 
-  if (Number(btn.getAttribute(`data-good-num`)) > 1) obj.maxcount = Number(btn.getAttribute(`data-good-num`));
+  if (Number(btn.getAttribute(`data-goods-num`)) > 1) obj.maxcount = Number(btn.getAttribute(`data-goods-num`));
   else obj.maxcount = false;
 
   return obj;
@@ -138,8 +145,12 @@ function renderOneGood(element) { // render one item
   deleteBtnBasket.addEventListener(`click`, deleteGoodHandler);
 
   workTemplate.setAttribute(`id-data`, element.id);
+  
   workTemplate.querySelector(`[data-goods-title]`).textContent = element.title;
+  workTemplate.querySelector(`[data-goods-title]`).setAttribute('data-basket-lang', element.titleLng);
   workTemplate.querySelector(`[data-goods-desc]`).textContent = element.desc;
+  workTemplate.querySelector(`[data-goods-desc]`).setAttribute('data-basket-lang', element.descLng);
+
   workTemplate.querySelector(`[data-goods-cost]`).setAttribute(`data-goods-cost`, element.cost);
   workTemplate.querySelector(`[data-goods-cost]`).textContent = element.cost.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `);
   workTemplate.querySelector(`[data-goods-img]`).src = element.img;
@@ -202,7 +213,7 @@ function createTotalCost() {
   if (subtotalField) subtotalField.textContent = String(totalCost).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `);
 
   if (deliveryField && deliveryField.getAttribute('data-basket-delivery')) {
-    deliveryField.textContent = `${deliveryField.getAttribute('data-basket-delivery')} ₽`;
+    deliveryField.textContent = `${deliveryField.getAttribute('data-basket-delivery').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `)} ₽`;
     totalCost = totalCost + Number(deliveryField.getAttribute('data-basket-delivery')); // для будущего рендера доставки
   } else if (deliveryField && deliveryField.getAttribute('data-basket-delivery') === ``) deliveryField.textContent = `Введите индекс`;
 

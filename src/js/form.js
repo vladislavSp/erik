@@ -88,7 +88,6 @@ function addressValidation(event) { // ввод в форму значений �
     el.dataset.valid = `valid`;
   } else if (el.value.length === 0) {
     el.dataset.valid = ``;
-
   }
 }
 
@@ -99,43 +98,7 @@ function indexValidation(event) {
   el.setAttribute('value', el.value);
 
   if (el.value.length > 0) {
-    
     sendRequest(el);
-    
-    // let sendObj = {}, sendJson, data = {};
-    // data.goods = [];
-
-    // sendObj.goods = JSON.parse(localStorage.goods);
-    
-    // sendObj.goods.forEach(el => {
-    //   data.goods.push({id: el.id, num: el.number});
-    // });
-
-    // data.indexx = el.value;
-    // sendJson = JSON.stringify(data);
-
-    // axios({
-    //   method: 'post',
-    //   url: `back/state.php`,
-    //   data: `api=price&data=${sendJson}`,
-    // }).then(function (response) {
-    //   if (response.data.delivery === `error`) { // Ошибка ввода - нужно ввести корректный индекс
-    //     el.dataset.state = `invalid`;
-    //     el.dataset.valid = ``;
-
-    //     deliveryCost.setAttribute(`data-basket-delivery`, ``);
-    //     createTotalCost();
-    //     deliveryCost.textContent = `Введите корректный индекс`;
-    //   } else {
-    //     el.dataset.state = ``;
-    //     el.dataset.valid = `valid`;
-
-    //     let price = response.data.delivery.price;
-
-    //     deliveryCost.setAttribute(`data-basket-delivery`, price); 
-    //     createTotalCost(price);
-    //   }
-    // });
   } else {
     el.dataset.valid = ``;
     el.dataset.state = ``;
@@ -149,10 +112,13 @@ function indexValidation(event) {
 function checkboxClickHandler() {
   this.dataset.state = this.dataset.state === `check` ? `` : `check`;
   this.dataset.valid = this.dataset.state === `check` ? `valid` : ``;
+
+  // Проверка полей на заполненность
+  checkFields();
   checkBtnState();
 }
 
-function checkValidation() {
+function checkFields() {
   inputFields.forEach(el => {
     if (el.getAttribute('data-validation') === `text`) textFieldValidation(el); // ДОБАВИТЬ ПРОВЕРКУ ДЛЯ ПОЛЕЙ 
     else if (el.getAttribute('data-validation') === `number`) numberValidation(el);
@@ -162,11 +128,14 @@ function checkValidation() {
 
     if (el.dataset.valid !== `valid`) el.setAttribute(`data-state`, `invalid`);
   });
-  
+}
+
+function checkValidation() {
+  checkFields();
 
   let fieldComplete = inputFields.every(el => el.dataset.valid === `valid`);
   let checkboxCheck = checkboxWrap.dataset.state === `check`;
-
+  
   if (!checkboxCheck) checkboxWrap.dataset.valid = `invalid`;
 
   if (fieldComplete && checkboxCheck) { // проверка события на кнопке
@@ -200,16 +169,14 @@ function sendingForm() {
     method: 'post',
     url: `back/state.php`,
     data: `api=add&data=${sendJson}`,
-  }).then(() => {
-    localStorage.goods = JSON.stringify([]); // Очищение корзины после покупки
   }).then((response) => {
-    location.href = response.data.link;
+    if (response.data) localStorage.goods = JSON.stringify([]); // Очищение корзины после покупки
+  }).then((response) => {
+    if (response.data) location.href = response.data.link;
   });
 }
 
-
-
-function sendRequest(element) {
+function sendRequest(element) { // ЗАПРОС ЦЕНЫ
   let sendObj = {}, sendJson, data = {};
   data.goods = [];
 
@@ -232,7 +199,6 @@ function sendRequest(element) {
     if (response.data.delivery === `error`) { // Ошибка ввода - нужно ввести корректный индекс
       element.dataset.state = `invalid`;
       element.dataset.valid = ``;
-
       deliveryCost.setAttribute(`data-basket-delivery`, ``);
       createTotalCost();
       deliveryCost.textContent = `Введите корректный индекс`;
@@ -245,6 +211,8 @@ function sendRequest(element) {
       deliveryCost.setAttribute(`data-basket-delivery`, price); 
       createTotalCost(price);
     }
+    checkFields();
+    checkBtnState();
   });
 }
 
