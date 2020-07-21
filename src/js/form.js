@@ -22,7 +22,8 @@ function resetValidation() { // сброс ошибок инпутов
   this.dataset.state = ``;
 }
 
-function checkBtnState() { // проверка заполненности формы
+
+function checkBtnState() { // проверка заполненности формы и 
   let fieldComplete = inputFields.every(el => el.dataset.valid === `valid`);
   let checkboxCheck = checkboxWrap.dataset.state === `check`;
 
@@ -30,8 +31,7 @@ function checkBtnState() { // проверка заполненности фор
 }
 
 
-
-// VALIDATION
+// Обработчики для вода значений
 function validationHandler(elem) {
   let value = elem.dataset.validation; // get data-validation
 
@@ -97,7 +97,7 @@ function indexValidation(event) {
   let el = event.target ? event.target : event;
   el.setAttribute('value', el.value);
 
-  if (el.value.length > 0) {
+  if (el.value.length > 0) { // проверка 
     sendRequest(el);
   } else {
     el.dataset.valid = ``;
@@ -108,23 +108,24 @@ function indexValidation(event) {
 }
 
 
-// CHECKBOX VALID
+// Проверка checkbox (а внутри полей формы и кнопки)
 function checkboxClickHandler() {
   this.dataset.state = this.dataset.state === `check` ? `` : `check`;
   this.dataset.valid = this.dataset.state === `check` ? `valid` : ``;
 
-  // Проверка полей на заполненность
   checkFields();
   checkBtnState();
+  indexValidation(inputIndexField);
 }
 
+// Проверка полей - за искл индекса
 function checkFields() {
   inputFields.forEach(el => {
     if (el.getAttribute('data-validation') === `text`) textFieldValidation(el); // ДОБАВИТЬ ПРОВЕРКУ ДЛЯ ПОЛЕЙ 
     else if (el.getAttribute('data-validation') === `number`) numberValidation(el);
     else if (el.getAttribute('data-validation') === `mail`) mailValidation(el);
     else if (el.getAttribute('data-validation') === `address`) addressValidation(el);
-    else if (el.getAttribute('data-validation') === `index`) indexValidation(el);
+    // else if (el.getAttribute('data-validation') === `index`) indexValidation(el);
 
     if (el.dataset.valid !== `valid`) el.setAttribute(`data-state`, `invalid`);
   });
@@ -132,6 +133,7 @@ function checkFields() {
 
 function checkValidation() {
   checkFields();
+  indexValidation(inputIndexField);
 
   let fieldComplete = inputFields.every(el => el.dataset.valid === `valid`);
   let checkboxCheck = checkboxWrap.dataset.state === `check`;
@@ -176,32 +178,33 @@ function sendingForm() {
   });
 }
 
-function sendRequest(element) { // ЗАПРОС ЦЕНЫ
+function sendRequest(element) { // ЗАПРОС ЦЕНЫ - element - это index
   let sendObj = {}, sendJson, data = {};
   data.goods = [];
 
   sendObj.goods = JSON.parse(localStorage.goods);
-  
-  sendObj.goods.forEach(el => {
-    data.goods.push({id: el.id, num: el.number});
-  });
+  sendObj.goods.forEach(el => data.goods.push({id: el.id, num: el.number}));
 
   data.indexx = element.value;
   sendJson = JSON.stringify(data);
 
-  deliveryCost.textContent = `Определяется`;
+  // if (!deliveryCost.getAttribute('data-basket-delivery')) 
+  if (localStorage.getItem('lang') === 'en') deliveryCost.textContent = `Determined`;
+  else deliveryCost.textContent = `Определяется`;
 
   axios({
     method: 'post',
     url: `back/state.php`,
     data: `api=price&data=${sendJson}`,
   }).then(function (response) {
-    if (response.data.delivery === `error`) { // Ошибка ввода - нужно ввести корректный индекс
+    if (response.data.delivery === `error`) { // Ошибка ввода - ввести корректный индекс
       element.dataset.state = `invalid`;
       element.dataset.valid = ``;
+
       deliveryCost.setAttribute(`data-basket-delivery`, ``);
       createTotalCost();
-      deliveryCost.textContent = `Введите корректный индекс`;
+      if (localStorage.getItem('lang') === 'en') deliveryCost.textContent = `Enter correct index`;
+      else deliveryCost.textContent = `Введите корректный индекс`;
     } else {
       element.dataset.state = ``;
       element.dataset.valid = `valid`;
@@ -211,6 +214,7 @@ function sendRequest(element) { // ЗАПРОС ЦЕНЫ
       deliveryCost.setAttribute(`data-basket-delivery`, price); 
       createTotalCost(price);
     }
+  }).then(() => {
     checkFields();
     checkBtnState();
   });

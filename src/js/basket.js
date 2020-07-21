@@ -215,7 +215,10 @@ function createTotalCost() {
   if (deliveryField && deliveryField.getAttribute('data-basket-delivery')) {
     deliveryField.textContent = `${deliveryField.getAttribute('data-basket-delivery').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `)} ₽`;
     totalCost = totalCost + Number(deliveryField.getAttribute('data-basket-delivery')); // для будущего рендера доставки
-  } else if (deliveryField && deliveryField.getAttribute('data-basket-delivery') === ``) deliveryField.textContent = `Введите индекс`;
+  } else if (deliveryField && deliveryField.getAttribute('data-basket-delivery') === ``) {
+    if (localStorage.getItem('lang') === 'en') deliveryField.textContent = `Enter index`;
+    else deliveryField.textContent = `Введите индекс`;
+  }
 
   // Кнопка заказа
   if (orderBtnCost) orderBtnCost.textContent = totalCost;
