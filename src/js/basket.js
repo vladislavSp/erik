@@ -70,7 +70,11 @@ function buttonCloseHandler(evt) {
 function viewOrderBasket(evt) { // fn for order-page
   evt.preventDefault();
   basketOrder.classList.toggle(`basket-translate`);
-  this.textContent = basketOrder.classList.contains(`basket-translate`) ? `Показать корзину` : `Скрыть корзину`;
+  if (localStorage.getItem('lang') === 'en') {
+    this.textContent = basketOrder.classList.contains(`basket-translate`) ? `View basket` : `Hide basket`;
+  } else {
+    this.textContent = basketOrder.classList.contains(`basket-translate`) ? `Показать корзину` : `Скрыть корзину`;
+  }
 }
 
 function contentViewBasket(state) {

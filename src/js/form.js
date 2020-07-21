@@ -115,7 +115,7 @@ function checkboxClickHandler() {
 
   checkFields();
   checkBtnState();
-  indexValidation(inputIndexField);
+  // indexValidation(inputIndexField);
 }
 
 // Проверка полей - за искл индекса
