@@ -13,7 +13,7 @@ function scrollToContent(evt) {
 
     blocksForSroll.forEach(el => {
       if (el.getAttribute(`data-content`) === attr) {
-        gsap.to($("body,html"), 0.8, {
+        gsap.to(document.querySelector('html'), 0.8, {
           ease: Power2.easeOut,
           scrollTop: el.getBoundingClientRect().top + pageYOffset - headerBlock.getBoundingClientRect().height
         });

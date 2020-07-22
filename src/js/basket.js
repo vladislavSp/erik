@@ -43,8 +43,6 @@ function changeViewBasketHandler(evt) {
 }
 
 function stateViewBasket(state) {
-  console.log(state);
-
   basket.setAttribute(`data-state`, `${state === `open` ? `open` : `close`}`);
   document[state === `open` ? `addEventListener` : `removeEventListener`](`click`, clickCloseHandler);
   document[state ===`open` ? `addEventListener` : `removeEventListener`](`keydown`, buttonCloseHandler);
@@ -217,7 +215,7 @@ function createTotalCost() {
   if (subtotalField) subtotalField.textContent = String(totalCost).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `);
 
   if (deliveryField && deliveryField.getAttribute('data-basket-delivery')) {
-    deliveryField.textContent = `${deliveryField.getAttribute('data-basket-delivery').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `)} ₽`;
+    deliveryField.innerHTML = `${deliveryField.getAttribute('data-basket-delivery').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `)} <span rub>₽</span>`;
     totalCost = totalCost + Number(deliveryField.getAttribute('data-basket-delivery')); // для будущего рендера доставки
   } else if (deliveryField && deliveryField.getAttribute('data-basket-delivery') === ``) {
     if (localStorage.getItem('lang') === 'en') deliveryField.textContent = `Enter index`;
