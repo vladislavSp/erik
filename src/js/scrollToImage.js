@@ -1,6 +1,6 @@
 let containerCard = document.querySelector(`[data-card="navwrap"]`);
 
-class ViewProgress{
+class ViewProgress {
     
   /**
    * Variable data
@@ -93,7 +93,7 @@ class ViewProgress{
       // cord
       let size = el.getBoundingClientRect().top + pageYOffset;
       // animation scroll
-      gsap.to( $('body,html'), 0.8, {ease: Power2.easeOut, scrollTop: size} );
+      gsap.to( document.querySelector('html'), 0.8, {ease: Power2.easeOut, scrollTop: size} );
   }
 }
 
