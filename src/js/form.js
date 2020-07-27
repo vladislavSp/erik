@@ -18,12 +18,12 @@ if (checkboxWrap) checkboxWrap.addEventListener(`click`, checkboxClickHandler);
 
 if (orderBtn) orderBtn.addEventListener(`click`, checkValidation);
 
-function resetValidation() { // сброс ошибок инпутов
+function resetValidation() {
   this.dataset.state = ``;
 }
 
 
-function checkBtnState() { // проверка заполненности формы и 
+function checkBtnState() { // check form fields
   let fieldComplete = inputFields.every(el => el.dataset.valid === `valid`);
   let checkboxCheck = checkboxWrap.dataset.state === `check`;
 
@@ -31,7 +31,7 @@ function checkBtnState() { // проверка заполненности фор
 }
 
 
-// Обработчики для вода значений
+// validation functions
 function validationHandler(elem) {
   let value = elem.dataset.validation; // get data-validation
 
@@ -46,24 +46,24 @@ function textFieldValidation(event) {
   let el = event.target ? event.target : event ;
   let value = el.value, numbers = [], initArr = [];
   el.setAttribute('value', el.value);
-  numbers.push(value.replace(/[^\d]/g,'')); // находим значения цифр в инпуте
-  initArr = value.split(''); // разделяем ввод на массив (",");
+  numbers.push(value.replace(/[^\d]/g,''));
+  initArr = value.split('');
 
-  let num = initArr.indexOf(numbers[0]); // поиск первого ввода цифры
+  let num = initArr.indexOf(numbers[0]);
 
   if (num >= 0) {
-    initArr.splice(num, 1); // удаление этого ввода
-    el.value = initArr.join(''); // подстановка значения без цифр
+    initArr.splice(num, 1);
+    el.value = initArr.join('');
   }
 
-  if (el.value === ` `) el.value = this.value.trim(); //удаление первого пробела
+  if (el.value === ` `) el.value = this.value.trim();
 
   if (el.value.length > 0) el.dataset.valid = `valid`;
   else if (el.value === ``) el.dataset.valid = ``;
 }
 
 function numberValidation(event) {
-  let el = event.target ? event.target : event; // выбор эвента для
+  let el = event.target ? event.target : event;
   el.value = el.value.replace(/[^\d.]/g, '');
   el.setAttribute('value', el.value);
   if (el.value !== ``) el.dataset.valid = `valid`;
@@ -80,24 +80,24 @@ function mailValidation (event) {
   else el.dataset.valid = `invalid`;
 }
 
-function addressValidation(event) { // ввод в форму значений и получение цены
+function addressValidation(event) {
   let el = event.target ? event.target : event;
   el.setAttribute('value', el.value);
 
-  if (el.value.length > 0) { // Пересмотреть условие, чтобы добавить проверку адреса и определение цены
+  if (el.value.length > 0) {
     el.dataset.valid = `valid`;
   } else if (el.value.length === 0) {
     el.dataset.valid = ``;
   }
 }
 
-if (inputIndexField && inputIndexField.getAttribute('value')) indexValidation(inputIndexField); // если поле ввода
+if (inputIndexField && inputIndexField.getAttribute('value')) indexValidation(inputIndexField);
 
 function indexValidation(event) {
   let el = event.target ? event.target : event;
   el.setAttribute('value', el.value);
 
-  if (el.value.length > 0) { // проверка 
+  if (el.value.length > 0) {
     sendRequest(el);
   } else {
     el.dataset.valid = ``;
@@ -108,24 +108,22 @@ function indexValidation(event) {
 }
 
 
-// Проверка checkbox (а внутри полей формы и кнопки)
+//
 function checkboxClickHandler() {
   this.dataset.state = this.dataset.state === `check` ? `` : `check`;
   this.dataset.valid = this.dataset.state === `check` ? `valid` : ``;
 
   checkFields();
   checkBtnState();
-  // indexValidation(inputIndexField);
 }
 
-// Проверка полей - за искл индекса
+
 function checkFields() {
   inputFields.forEach(el => {
-    if (el.getAttribute('data-validation') === `text`) textFieldValidation(el); // ДОБАВИТЬ ПРОВЕРКУ ДЛЯ ПОЛЕЙ 
+    if (el.getAttribute('data-validation') === `text`) textFieldValidation(el);
     else if (el.getAttribute('data-validation') === `number`) numberValidation(el);
     else if (el.getAttribute('data-validation') === `mail`) mailValidation(el);
     else if (el.getAttribute('data-validation') === `address`) addressValidation(el);
-    // else if (el.getAttribute('data-validation') === `index`) indexValidation(el);
 
     if (el.dataset.valid !== `valid`) el.setAttribute(`data-state`, `invalid`);
   });
@@ -140,7 +138,7 @@ function checkValidation() {
   
   if (!checkboxCheck) checkboxWrap.dataset.valid = `invalid`;
 
-  if (fieldComplete && checkboxCheck) { // проверка события на кнопке
+  if (fieldComplete && checkboxCheck) { // check click btn
     if (this.hasAttribute('data-send-order')) sendingForm();
   }
 }
@@ -172,13 +170,13 @@ function sendingForm() {
     url: `back/state.php`,
     data: `api=add&data=${sendJson}`,
   }).then((response) => {
-    if (response.data) localStorage.goods = JSON.stringify([]); // Очищение корзины после покупки
+    if (response.data) localStorage.goods = JSON.stringify([]); // delete state basket after purchase 
   }).then((response) => {
     if (response.data) location.href = response.data.link;
   });
 }
 
-function sendRequest(element) { // ЗАПРОС ЦЕНЫ - element - это index
+function sendRequest(element) {
   let sendObj = {}, sendJson, data = {};
   data.goods = [];
 
@@ -188,7 +186,6 @@ function sendRequest(element) { // ЗАПРОС ЦЕНЫ - element - это inde
   data.indexx = element.value;
   sendJson = JSON.stringify(data);
 
-  // if (!deliveryCost.getAttribute('data-basket-delivery')) 
   if (localStorage.getItem('lang') === 'en') deliveryCost.textContent = `Determined`;
   else deliveryCost.textContent = `Определяется`;
 
@@ -197,7 +194,7 @@ function sendRequest(element) { // ЗАПРОС ЦЕНЫ - element - это inde
     url: `back/state.php`,
     data: `api=price&data=${sendJson}`,
   }).then(function (response) {
-    if (response.data.delivery === `error`) { // Ошибка ввода - ввести корректный индекс
+    if (response.data.delivery === `error`) { // error - enter correct index
       element.dataset.state = `invalid`;
       element.dataset.valid = ``;
 

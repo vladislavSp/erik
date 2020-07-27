@@ -6,7 +6,7 @@ let basketBtns = [...document.querySelectorAll(`*[data-basket-btn]`)],
     basketOrder = document.querySelector(`[data-basket="translate"]`),
 
     // section for Good Add/Remove
-    addGoodBtn = document.querySelector(`[data-goods-btn="add"]`), // data-good-btn
+    addGoodBtn = document.querySelector(`[data-goods-btn="add"]`),
     basketCounters = [...document.querySelectorAll(`*[data-basket-counter]`)],
     basketFullView = document.querySelector(`[data-basket-full]`),
     basketEmptyView = document.querySelector(`[data-basket-empty]`),
@@ -28,7 +28,7 @@ function mainStateBasket() {
     contentViewBasket(true);
     renderGoodsList(localStorage.goods);
     createTotalCost();
-    if (location.pathname === `/order`) sendRequest(indexInput); // 16/07/2020 - ДОБАВЛЕНИЕ РАСЧЁТА ЦЕНЫ С УЧЁТОМ ДОСТАВКИ
+    if (location.pathname === `/order`) sendRequest(indexInput);
   } else {
     contentViewBasket(false);
   }
@@ -83,18 +83,16 @@ function contentViewBasket(state) {
 
 
 // Sect desc add/delete goods and count,cost
-
-function countGoods() {// Счётчик товаров в корзине
+function countGoods() {
   basketCounters.forEach(el => el.textContent = JSON.parse(localStorage.goods).length);
 }
 
-function addGoodHandler(evt) { // обр-к кнопки добавления товара
-  // evt.preventDefault();
+function addGoodHandler(evt) {
   addToStorage(createObjectForStorage(this));
   stateViewBasket(`open`);
 }
 
-function createObjectForStorage(btn) {// Формирование объекта для Storage
+function createObjectForStorage(btn) {
   let obj = {};
   obj.id = btn.getAttribute(`data-goods-id`);
   obj.title = btn.getAttribute(`data-goods-title`);
@@ -114,11 +112,11 @@ function createObjectForStorage(btn) {// Формирование объекта
   return obj;
 }
 
-function addToStorage(obj) { // obj - ранее сформированный объект
+function addToStorage(obj) {
   goodsArray = JSON.parse(localStorage.goods);
 
-  if (goodsArray.every(el => el.id !== obj.id)) { // Если есть id в массиве 
-    goodsArray.push(obj); // если добавляется, то происходит и новый рендер
+  if (goodsArray.every(el => el.id !== obj.id)) {
+    goodsArray.push(obj);
     localStorage.setItem(`goods`, JSON.stringify(goodsArray));
     renderGoodsList(localStorage.goods);
     contentViewBasket(true);
@@ -137,12 +135,11 @@ function renderGoodsList(renderItem) {
 }
 
 function renderOneGood(element) { // render one item
-  let goodTemplate = document.getElementById(`goods-template`).content, // клон шаблона и внутр-го контента
+  let goodTemplate = document.getElementById(`goods-template`).content,
       workTemplate = goodTemplate.cloneNode(true).querySelector(`.basket__item`),
       deleteBtnBasket = workTemplate.querySelector(`[data-basket-delete]`),
       counterGoods = workTemplate.querySelector(`[data-signs="listener"]`);
 
-  // обработчик для удаления
   deleteBtnBasket.setAttribute(`data-basket-delete`, element.id);
   deleteBtnBasket.addEventListener(`click`, deleteGoodHandler);
 
@@ -179,13 +176,13 @@ function deleteGoodHandler() {
   deleteBlock.remove();
   countGoods();
 
-  // Если все товары удалены
+  // if all goods delete
   if (!JSON.parse(localStorage.goods).length) {
     contentViewBasket(false);
-    if (location.pathname === `/order`) location.href = `/`; // redirect на главную при пустой корзине на странице заказа
+    if (location.pathname === `/order`) location.href = `/`; // redirect
   }
   else {
-    if (location.pathname === `/order`) sendRequest(indexInput); // 16/07/2020 - ДОБАВЛЕНИЕ РАСЧЁТА ЦЕНЫ С УЧЁТОМ ДОСТАВКИ
+    if (location.pathname === `/order`) sendRequest(indexInput);
     else createTotalCost();
   }
 }
@@ -216,16 +213,15 @@ function createTotalCost() {
 
   if (deliveryField && deliveryField.getAttribute('data-basket-delivery')) {
     deliveryField.innerHTML = `${deliveryField.getAttribute('data-basket-delivery').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `)} <span rub>₽</span>`;
-    totalCost = totalCost + Number(deliveryField.getAttribute('data-basket-delivery')); // для будущего рендера доставки
+    totalCost = totalCost + Number(deliveryField.getAttribute('data-basket-delivery'));
   } else if (deliveryField && deliveryField.getAttribute('data-basket-delivery') === ``) {
     if (localStorage.getItem('lang') === 'en') deliveryField.textContent = `Enter index`;
     else deliveryField.textContent = `Введите индекс`;
   }
 
-  // Кнопка заказа
   if (orderBtnCost) orderBtnCost.textContent = totalCost;
 
-  basketField.textContent = String(totalCost).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `); // разделение разрядов числа
+  basketField.textContent = String(totalCost).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `);
 
   return totalCost;
 }
@@ -249,12 +245,12 @@ function goodsCountChange(good, state, field, max) { // max
 
   localStorage.setItem("goods", JSON.stringify(goodsArray));
 
-  if (location.pathname === `/order`) sendRequest(indexInput); // 16/07/2020 - ДОБАВЛЕНИЕ РАСЧЁТА ЦЕНЫ С УЧЁТОМ ДОСТАВКИ
+  if (location.pathname === `/order`) sendRequest(indexInput);
   else createTotalCost();
 }
 
 function countNumber(state, field, num, max) { // max
-  if (state) { // кол-во товара подвязанное на количество в админке
+  if (state) {
     if (max < 3) num = max;
     else if (num === 3) num = 3;
     else num = num + 1; // num 
@@ -268,7 +264,6 @@ function countNumber(state, field, num, max) { // max
 
 
 // NEW FUNC - update Basket from server
-
 function updateStoreFromServer() {
   axios({
     method: 'get',
@@ -291,15 +286,15 @@ function updateStoreFromServer() {
 const MAX_COUNT_GOOD = 3;
 
 function updataStore() {
-  let storeGoods = JSON.parse(localStorage.storeGoods); // товар с сервера 
-  goodsArray = JSON.parse(localStorage.goods); // товар на странице
+  let storeGoods = JSON.parse(localStorage.storeGoods); // goods on server
+  goodsArray = JSON.parse(localStorage.goods); // goods on page
 
   if (goodsArray) {
 
     goodsArray.forEach((el, i) => {
       storeGoods.forEach(newEl => {
         if (el.id === newEl.id) {
-          if (Number(newEl.num) > 0 && Number(newEl.num) < 3) { // Синхронизация с сервера количества товаров для корзины
+          if (Number(newEl.num) > 0 && Number(newEl.num) < 3) { // sync
             goodsArray[i].maxcount = Number(newEl.num);
             goodsArray[i].number = Number(newEl.num);
           }

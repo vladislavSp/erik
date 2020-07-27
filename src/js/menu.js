@@ -1,5 +1,3 @@
-// import ScrollControl from './scrollControl.js';
-
 let menuBtn = document.querySelector('[data-menu-btn]'),
     header = document.querySelector('[data-header]'),
     links = [...document.querySelectorAll('[data-link="scroll"]')];
@@ -22,5 +20,4 @@ function stateMenu(f = 'open') {
   header.classList[f === 'close' ? 'add' : 'remove']('header--menu-open');
   menuBtn.setAttribute('data-menu-btn', f === 'close' ? 'open' : 'close');
   document.body.overflowX = f === 'close' ? `hidden` : `` ;
-  // f === 'close' ? ScrollControl.lock() : ScrollControl.unlock(); // ф-ция блока скролла
 }
