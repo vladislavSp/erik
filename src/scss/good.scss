@@ -21,3 +21,12 @@
     display: block;
   }
 }
+
+.catalog__item[data-soldout="soldout"] {
+  & .catalog__soldout {
+    display: block;
+  }
+  & .catalog__cost {
+    display: none;
+  }
+}

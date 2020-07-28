@@ -169,10 +169,10 @@ function sendingForm() {
     data: `api=add&data=${sendJson}`,
   }).then((response) => {
     if (response.data === `error`) location.href = location.href;
-    // else if (typeof response.data === `object`) {
-    //   localStorage.goods = JSON.stringify([]); // delete state basket after purchase
-    //   location.href = response.data.link;
-    // }
+    else if (typeof response.data === `object`) {
+      localStorage.goods = JSON.stringify([]); // delete state basket after purchase
+      location.href = response.data.link;
+    }
   });
 }
 
