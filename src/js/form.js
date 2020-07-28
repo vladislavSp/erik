@@ -168,11 +168,15 @@ function sendingForm() {
     url: `back/state.php`,
     data: `api=add&data=${sendJson}`,
   }).then((response) => {
-    if (response.data) localStorage.goods = JSON.stringify([]); // delete state basket after purchase 
-  }).then((response) => {
-    if (response.data) location.href = response.data.link;
+    if (response.data === `error`) location.href = location.href;
+    // else if (typeof response.data === `object`) {
+    //   localStorage.goods = JSON.stringify([]); // delete state basket after purchase
+    //   location.href = response.data.link;
+    // }
   });
 }
+
+
 
 // function sendRequest(element) {
 //   let sendObj = {}, sendJson, data = {};

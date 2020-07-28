@@ -20,6 +20,7 @@ class ViewProgress {
    * Init
   */
   init(){
+      this.scroll();
       // scroll state navigation element
       window.addEventListener('scroll', this.scroll.bind(this));
       // click navigation element
@@ -31,7 +32,7 @@ class ViewProgress {
   /**
    * Sroll logic
   */
-  scroll(){
+  scroll() {
       // calculation position
       let elem = this.cord( this.vcard );
       // select position

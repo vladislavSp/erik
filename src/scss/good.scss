@@ -12,3 +12,12 @@
     display: block;
   }
 }
+
+.card[data-contract="contract"] {
+  & .card__btn {
+    display: none;
+  }
+  & .card__soldout {
+    display: block;
+  }
+}

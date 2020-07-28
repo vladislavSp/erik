@@ -28,9 +28,9 @@ function mainStateBasket() {
     contentViewBasket(true);
     renderGoodsList(localStorage.goods);
     createTotalCost();
-    // if (location.pathname === `/order`) sendRequest(indexInput);
   } else {
     contentViewBasket(false);
+    if (location.pathname === `/order` && !JSON.parse(localStorage.goods).length) location.href = `/`;
   }
 
   countGoods();
@@ -181,11 +181,7 @@ function deleteGoodHandler() {
     contentViewBasket(false);
     if (location.pathname === `/order`) location.href = `/`; // redirect
   }
-  else {
-    createTotalCost();
-    // if (location.pathname === `/order`) sendRequest(indexInput);
-    // else createTotalCost();
-  }
+  else createTotalCost();
 }
 
 function deleteFromStorage(param) {
@@ -246,7 +242,6 @@ function goodsCountChange(good, state, field, max) { // max
 
   localStorage.setItem("goods", JSON.stringify(goodsArray));
 
-  // if (location.pathname === `/order`) sendRequest(indexInput);
   createTotalCost();
 }
 
