@@ -1,4 +1,4 @@
-import sendRequest from './form.js';
+// import sendRequest from './form.js';
 
 let basketBtns = [...document.querySelectorAll(`*[data-basket-btn]`)],
     basket = document.querySelector(`[data-basket]`),
@@ -28,7 +28,7 @@ function mainStateBasket() {
     contentViewBasket(true);
     renderGoodsList(localStorage.goods);
     createTotalCost();
-    if (location.pathname === `/order`) sendRequest(indexInput);
+    // if (location.pathname === `/order`) sendRequest(indexInput);
   } else {
     contentViewBasket(false);
   }
@@ -182,8 +182,9 @@ function deleteGoodHandler() {
     if (location.pathname === `/order`) location.href = `/`; // redirect
   }
   else {
-    if (location.pathname === `/order`) sendRequest(indexInput);
-    else createTotalCost();
+    createTotalCost();
+    // if (location.pathname === `/order`) sendRequest(indexInput);
+    // else createTotalCost();
   }
 }
 
@@ -204,20 +205,20 @@ function totalCostFn() {
 function createTotalCost() {
   let basketField = document.querySelector(`.basket__total-in`),
       subtotalField = document.querySelector(`[data-basket-subtotal]`),
-      deliveryField = document.querySelector(`[data-basket-delivery]`),
+      // deliveryField = document.querySelector(`[data-basket-delivery]`),
       orderBtnCost = document.querySelector(`.order__btn-cost`);
 
   let totalCost = totalCostFn();
 
   if (subtotalField) subtotalField.textContent = String(totalCost).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `);
 
-  if (deliveryField && deliveryField.getAttribute('data-basket-delivery')) {
-    deliveryField.innerHTML = `${deliveryField.getAttribute('data-basket-delivery').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `)} <span rub>₽</span>`;
-    totalCost = totalCost + Number(deliveryField.getAttribute('data-basket-delivery'));
-  } else if (deliveryField && deliveryField.getAttribute('data-basket-delivery') === ``) {
-    if (localStorage.getItem('lang') === 'en') deliveryField.textContent = `Enter index`;
-    else deliveryField.textContent = `Введите индекс`;
-  }
+  // if (deliveryField && deliveryField.getAttribute('data-basket-delivery')) {
+  //   deliveryField.innerHTML = `${deliveryField.getAttribute('data-basket-delivery').replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, `$1 `)} <span rub>₽</span>`;
+  //   totalCost = totalCost + Number(deliveryField.getAttribute('data-basket-delivery'));
+  // } else if (deliveryField && deliveryField.getAttribute('data-basket-delivery') === ``) {
+  //   if (localStorage.getItem('lang') === 'en') deliveryField.textContent = `Enter index`;
+  //   else deliveryField.textContent = `Введите индекс`;
+  // }
 
   if (orderBtnCost) orderBtnCost.textContent = totalCost;
 
@@ -245,8 +246,8 @@ function goodsCountChange(good, state, field, max) { // max
 
   localStorage.setItem("goods", JSON.stringify(goodsArray));
 
-  if (location.pathname === `/order`) sendRequest(indexInput);
-  else createTotalCost();
+  // if (location.pathname === `/order`) sendRequest(indexInput);
+  createTotalCost();
 }
 
 function countNumber(state, field, num, max) { // max

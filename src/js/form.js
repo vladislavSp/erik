@@ -91,20 +91,17 @@ function addressValidation(event) {
   }
 }
 
-if (inputIndexField && inputIndexField.getAttribute('value')) indexValidation(inputIndexField);
+// if (inputIndexField && inputIndexField.getAttribute('value')) indexValidation(inputIndexField);
 
 function indexValidation(event) {
   let el = event.target ? event.target : event;
   el.setAttribute('value', el.value);
 
-  if (el.value.length > 0) {
-    sendRequest(el);
-  } else {
-    el.dataset.valid = ``;
-    el.dataset.state = ``;
-    deliveryCost.setAttribute(`data-basket-delivery`, ``);
-    createTotalCost();
-  }
+  if (el.value.length > 4) el.dataset.valid = `valid`;
+  else el.dataset.valid = ``;
+    // el.dataset.state = ``;
+    // deliveryCost.setAttribute(`data-basket-delivery`, ``);
+    // createTotalCost();
 }
 
 
@@ -124,6 +121,7 @@ function checkFields() {
     else if (el.getAttribute('data-validation') === `number`) numberValidation(el);
     else if (el.getAttribute('data-validation') === `mail`) mailValidation(el);
     else if (el.getAttribute('data-validation') === `address`) addressValidation(el);
+    else if (el.getAttribute('data-validation') === `index`) indexValidation(el);
 
     if (el.dataset.valid !== `valid`) el.setAttribute(`data-state`, `invalid`);
   });
@@ -176,45 +174,45 @@ function sendingForm() {
   });
 }
 
-function sendRequest(element) {
-  let sendObj = {}, sendJson, data = {};
-  data.goods = [];
+// function sendRequest(element) {
+//   let sendObj = {}, sendJson, data = {};
+//   data.goods = [];
 
-  sendObj.goods = JSON.parse(localStorage.goods);
-  sendObj.goods.forEach(el => data.goods.push({id: el.id, num: el.number}));
+//   sendObj.goods = JSON.parse(localStorage.goods);
+//   sendObj.goods.forEach(el => data.goods.push({id: el.id, num: el.number}));
 
-  data.indexx = element.value;
-  sendJson = JSON.stringify(data);
+//   data.indexx = element.value;
+//   sendJson = JSON.stringify(data);
 
-  if (localStorage.getItem('lang') === 'en') deliveryCost.textContent = `Determined`;
-  else deliveryCost.textContent = `Определяется`;
+//   if (localStorage.getItem('lang') === 'en') deliveryCost.textContent = `Determined`;
+//   else deliveryCost.textContent = `Определяется`;
 
-  axios({
-    method: 'post',
-    url: `back/state.php`,
-    data: `api=price&data=${sendJson}`,
-  }).then(function (response) {
-    if (response.data.delivery === `error`) { // error - enter correct index
-      element.dataset.state = `invalid`;
-      element.dataset.valid = ``;
+//   axios({
+//     method: 'post',
+//     url: `back/state.php`,
+//     data: `api=price&data=${sendJson}`,
+//   }).then(function (response) {
+//     if (response.data.delivery === `error`) { // error - enter correct index
+//       element.dataset.state = `invalid`;
+//       element.dataset.valid = ``;
 
-      deliveryCost.setAttribute(`data-basket-delivery`, ``);
-      createTotalCost();
-      if (localStorage.getItem('lang') === 'en') deliveryCost.textContent = `Enter correct index`;
-      else deliveryCost.textContent = `Введите корректный индекс`;
-    } else {
-      element.dataset.state = ``;
-      element.dataset.valid = `valid`;
+//       deliveryCost.setAttribute(`data-basket-delivery`, ``);
+//       createTotalCost();
+//       if (localStorage.getItem('lang') === 'en') deliveryCost.textContent = `Enter correct index`;
+//       else deliveryCost.textContent = `Введите корректный индекс`;
+//     } else {
+//       element.dataset.state = ``;
+//       element.dataset.valid = `valid`;
 
-      let price = response.data.delivery.price;
+//       let price = response.data.delivery.price;
 
-      deliveryCost.setAttribute(`data-basket-delivery`, price); 
-      createTotalCost(price);
-    }
-  }).then(() => {
-    checkFields();
-    checkBtnState();
-  });
-}
+//       deliveryCost.setAttribute(`data-basket-delivery`, price); 
+//       createTotalCost(price);
+//     }
+//   }).then(() => {
+//     checkFields();
+//     checkBtnState();
+//   });
+// }
 
-export default sendRequest;
+// export default sendRequest;
