@@ -16,7 +16,6 @@ import './scss/hover.scss';
 import './js/menu.js';
 import './js/basket.js';
 import './js/slider.js';
-import './js/menu.js';
 import './js/scrollToImage.js';
 import './js/savefield.js';
 import './js/form.js';

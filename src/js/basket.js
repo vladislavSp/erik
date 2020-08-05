@@ -290,7 +290,6 @@ function updataStore() {
       storeGoods.forEach(newEl => {
         if (el.id === newEl.id) {
           if (Number(newEl.num) > 0 && Number(newEl.num) <= 3) { // sync
-            console.log(Number(newEl.num)< el.number);
             goodsArray[i].maxcount = Number(newEl.num);
             if (Number(newEl.num) < Number(el.number)) goodsArray[i].number = Number(newEl.num);
           }
@@ -302,9 +301,6 @@ function updataStore() {
   
     localStorage.setItem(`goods`, JSON.stringify(goodsArray));
   }
-  
 }
 
 updateStoreFromServer();
-
-export default createTotalCost;

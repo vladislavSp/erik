@@ -1,5 +1,3 @@
-import createTotalCost from './basket.js';
-
 let checkboxWrap = document.querySelector(`[data-order-check]`),
     inputFields = [...document.querySelectorAll(`*[data-order-field]`)],
     inputIndexField = document.querySelector('[data-order-field="index"]'),
@@ -99,9 +97,6 @@ function indexValidation(event) {
 
   if (el.value.length > 4) el.dataset.valid = `valid`;
   else el.dataset.valid = ``;
-    // el.dataset.state = ``;
-    // deliveryCost.setAttribute(`data-basket-delivery`, ``);
-    // createTotalCost();
 }
 
 
@@ -175,48 +170,3 @@ function sendingForm() {
     }
   });
 }
-
-
-
-// function sendRequest(element) {
-//   let sendObj = {}, sendJson, data = {};
-//   data.goods = [];
-
-//   sendObj.goods = JSON.parse(localStorage.goods);
-//   sendObj.goods.forEach(el => data.goods.push({id: el.id, num: el.number}));
-
-//   data.indexx = element.value;
-//   sendJson = JSON.stringify(data);
-
-//   if (localStorage.getItem('lang') === 'en') deliveryCost.textContent = `Determined`;
-//   else deliveryCost.textContent = `Определяется`;
-
-//   axios({
-//     method: 'post',
-//     url: `back/state.php`,
-//     data: `api=price&data=${sendJson}`,
-//   }).then(function (response) {
-//     if (response.data.delivery === `error`) { // error - enter correct index
-//       element.dataset.state = `invalid`;
-//       element.dataset.valid = ``;
-
-//       deliveryCost.setAttribute(`data-basket-delivery`, ``);
-//       createTotalCost();
-//       if (localStorage.getItem('lang') === 'en') deliveryCost.textContent = `Enter correct index`;
-//       else deliveryCost.textContent = `Введите корректный индекс`;
-//     } else {
-//       element.dataset.state = ``;
-//       element.dataset.valid = `valid`;
-
-//       let price = response.data.delivery.price;
-
-//       deliveryCost.setAttribute(`data-basket-delivery`, price); 
-//       createTotalCost(price);
-//     }
-//   }).then(() => {
-//     checkFields();
-//     checkBtnState();
-//   });
-// }
-
-// export default sendRequest;
