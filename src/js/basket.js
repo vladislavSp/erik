@@ -286,13 +286,13 @@ function updataStore() {
   goodsArray = JSON.parse(localStorage.goods); // goods on page
 
   if (goodsArray) {
-
     goodsArray.forEach((el, i) => {
       storeGoods.forEach(newEl => {
         if (el.id === newEl.id) {
-          if (Number(newEl.num) > 0 && Number(newEl.num) < 3) { // sync
+          if (Number(newEl.num) > 0 && Number(newEl.num) <= 3) { // sync
+            console.log(Number(newEl.num)< el.number);
             goodsArray[i].maxcount = Number(newEl.num);
-            goodsArray[i].number = Number(newEl.num);
+            if (Number(newEl.num) < Number(el.number)) goodsArray[i].number = Number(newEl.num);
           }
           else if (Number(newEl.num) > 3) goodsArray[i].maxcount = MAX_COUNT_GOOD;
           else if (Number(newEl.num) === 0) goodsArray.splice(i, 1);
