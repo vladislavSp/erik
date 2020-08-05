@@ -12,7 +12,7 @@ let basketBtns = [...document.querySelectorAll(`*[data-basket-btn]`)],
     basketEmptyView = document.querySelector(`[data-basket-empty]`),
     basketContainer = document.querySelector(`[data-basket-list]`),
     goodsArray = [],
-    
+
     indexInput = document.querySelector('[data-order-field="index"]');
 
 const ESC_CODE = 27;
@@ -24,26 +24,26 @@ if (basketViewOrderBtn) basketViewOrderBtn.addEventListener(`click`, viewOrderBa
 if (addGoodBtn) addGoodBtn.addEventListener(`click`, addGoodHandler);
 
 function mainStateBasket() {
-  if (JSON.parse(localStorage.goods).length) {
-    contentViewBasket(true);
-    renderGoodsList(localStorage.goods);
-    createTotalCost();
-  } else {
-    contentViewBasket(false);
-    if (location.pathname === `/order` && !JSON.parse(localStorage.goods).length) location.href = `/`;
-  }
+    if (JSON.parse(localStorage.goods).length) {
+        contentViewBasket(true);
+        renderGoodsList(localStorage.goods);
+        createTotalCost();
+    } else {
+        contentViewBasket(false);
+        if (location.pathname === `/order` && !JSON.parse(localStorage.goods).length) location.href = `/`;
+    }
 
-  countGoods();
+    countGoods();
 }
 
 function changeViewBasketHandler(evt) {
-  evt.preventDefault();
-  let state = this.getAttribute(`data-basket-btn`);
-  stateViewBasket(state);
+    evt.preventDefault();
+    let state = this.getAttribute(`data-basket-btn`);
+    stateViewBasket(state);
 }
 
 function stateViewBasket(state) {
-  basket.setAttribute(`data-state`, `${state === `open` ? `open` : `close`}`);
+    basket.setAttribute(`data-state`, `${state === `open` ? `open` : `close`}`);
   document[state === `open` ? `addEventListener` : `removeEventListener`](`click`, clickCloseHandler);
   document[state ===`open` ? `addEventListener` : `removeEventListener`](`keydown`, buttonCloseHandler);
 }
@@ -281,25 +281,42 @@ function updateStoreFromServer() {
 
 const MAX_COUNT_GOOD = 3;
 
+// update store
 function updataStore() {
   let storeGoods = JSON.parse(localStorage.storeGoods); // goods on server
+  let updateGoodArray = [];
   goodsArray = JSON.parse(localStorage.goods); // goods on page
 
   if (goodsArray) {
     goodsArray.forEach((el, i) => {
       storeGoods.forEach(newEl => {
         if (el.id === newEl.id) {
-          if (Number(newEl.num) > 0 && Number(newEl.num) <= 3) { // sync
-            goodsArray[i].maxcount = Number(newEl.num);
-            if (Number(newEl.num) < Number(el.number)) goodsArray[i].number = Number(newEl.num);
+          // check price
+          if ( Number(newEl.num) !== 0 && Number(newEl.price) ){
+            // maximumnumber
+            if ( Number(newEl.num) > 0 && Number(newEl.num) <= 3 ) { // sync
+              el.maxcount = Number(newEl.num);
+              if (Number(newEl.num) < Number(el.number)) el.number = Number(newEl.num);
+            }
+            else if (Number(newEl.num) > 3){
+              goodsArray[i].maxcount = MAX_COUNT_GOOD;
+            } 
+            // check price
+            if (newEl.price !== el.cost){
+              el.cost = newEl.price;
+            }
+            // check image
+            if ( newEl.imgbasket !== el.img ){
+              el.img = newEl.imgbasket;
+            }
+            // add in array
+            updateGoodArray.push(el);
           }
-          else if (Number(newEl.num) > 3) goodsArray[i].maxcount = MAX_COUNT_GOOD;
-          else if (Number(newEl.num) === 0) goodsArray.splice(i, 1);
         }
-      })
+      });
     });
-  
-    localStorage.setItem(`goods`, JSON.stringify(goodsArray));
+    // console.log(updateGoodArray);
+    localStorage.setItem(`goods`, JSON.stringify(updateGoodArray)); // add to LS
   }
 }
 
